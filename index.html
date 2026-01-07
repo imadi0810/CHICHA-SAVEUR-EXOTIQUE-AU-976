@@ -92,7 +92,7 @@
     </main>
 
   <script>
-// 1. Gestion visuelle des saveurs (clic sur les images)
+// 1. Gestion visuelle des saveurs
 const items = document.querySelectorAll('.flavor-item');
 items.forEach(item => {
     item.addEventListener('click', () => {
@@ -101,24 +101,24 @@ items.forEach(item => {
     });
 });
 
-// 2. Envoi du mail et redirection WhatsApp avec choix du responsable
+// 2. Envoi discret et Choix WhatsApp
 document.getElementById('chichaForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Empêche de quitter la page immédiatement
+    e.preventDefault(); // Bloque la redirection pour poser la question
 
-    // Récupération des données du formulaire
+    // Récupération des infos
     const nom = document.getElementById('nom').value;
     const gout = document.querySelector('input[name="Saveur"]:checked')?.value || "Non précisé";
     const heure = document.getElementById('heure').value;
     const tel = document.getElementById('tel').value || "Non précisé";
 
     // LA QUESTION PERSONNALISÉE
-    const choice = confirm("Voulez-vous aussi confirmer votre commande par WhatsApp ?\n\nOUI 1 AVEC KALASH\nOUI 2 AVEC SAMUEL");
+    const choice = confirm("Votre réservation est bien prise en compte par mail !\n\nVoulez-vous aussi la confirmer par WhatsApp ?\n\nOK pour 1 AVEC KALASH\nANNULER pour 2 AVEC SAMUEL");
 
     const monNumero = choice ? "33685226577" : "33767165980";
     const responsable = choice ? "KALASH" : "SAMUEL";
     const message = `Salut ${responsable} ! Je confirme ma commande :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
 
-    // Envoi du mail en arrière-plan (le client ne voit rien)
+    // Envoi du mail en arrière-plan (le client reste sur la page)
     const formData = new FormData(this);
     fetch(this.action, {
         method: 'POST',
@@ -128,7 +128,7 @@ document.getElementById('chichaForm').addEventListener('submit', function(e) {
         // Redirection vers WhatsApp dès que le mail est envoyé
         window.location.href = `https://wa.me/${monNumero}?text=${encodeURIComponent(message)}`;
     }).catch(() => {
-        // En cas de problème réseau, on lance quand même WhatsApp
+        // En cas de bug réseau, on ouvre quand même WhatsApp
         window.location.href = `https://wa.me/${monNumero}?text=${encodeURIComponent(message)}`;
     });
 });
