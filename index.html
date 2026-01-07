@@ -29,6 +29,20 @@
         
         .submit-btn { width: 100%; padding: 18px; background: var(--gold); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 1rem; }
         footer { text-align: center; padding: 40px 0; color: #666; font-size: 0.85rem; }
+
+        /* --- STYLE DE LA FENÊTRE WHATSAPP PERSONNALISÉE --- */
+        #customModal {
+            display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-content {
+            background-color: #ffffff; margin: 15% auto; padding: 30px; border-radius: 20px;
+            width: 85%; max-width: 400px; text-align: center; color: #000; font-family: sans-serif;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        .modal-buttons { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
+        .btn-kalash { background-color: #007bff; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
+        .btn-samuel { background-color: #28a745; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -81,7 +95,7 @@
                 <br><a href="https://revolut.me/idarou78m/pocket/" style="color: #0075eb; font-weight: bold; text-decoration: none;">revolut.me/idarou78m</a>
             </div>
 
-            <button type="submit" class="submit-btn">Réserver & Envoyer WhatsApp</button>
+            <button type="submit" class="submit-btn">Réserver</button>
         </form>
 
         <footer>
@@ -91,49 +105,63 @@
         </footer>
     </main>
 
-  <script>
-// 1. Gestion des saveurs
-const items = document.querySelectorAll('.flavor-item');
-items.forEach(item => {
-    item.addEventListener('click', () => {
-        items.forEach(i => i.classList.remove('selected'));
-        item.classList.add('selected');
+    <div id="customModal">
+        <div class="modal-content">
+            <h2 style="margin-top:0">Réservation Envoyée !</h2>
+            <p>Votre réservation est bien prise en compte par mail.</p>
+            <p><b>Voulez-vous aussi la confirmer par WhatsApp ?</b></p>
+            <div class="modal-buttons">
+                <button id="choiceKalash" class="btn-kalash">1 AVEC KALASH</button>
+                <button id="choiceSamuel" class="btn-samuel">2 AVEC SAMUEL</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // 1. Gestion visuelle des saveurs
+    const items = document.querySelectorAll('.flavor-item');
+    items.forEach(item => {
+        item.addEventListener('click', () => {
+            items.forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+        });
     });
-});
 
-// 2. Envoi et Fenêtre personnalisée
-document.getElementById('chichaForm').addEventListener('submit', function(e) {
-    e.preventDefault(); 
+    // 2. Envoi Formulaire + Fenêtre de choix
+    document.getElementById('chichaForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // On reste sur la page pour afficher le choix
 
-    // Préparation des infos
-    const nom = document.getElementById('nom').value;
-    const gout = document.querySelector('input[name="Saveur"]:checked')?.value || "Non précisé";
-    const heure = document.getElementById('heure').value;
-    const tel = document.getElementById('tel').value || "Non précisé";
+        // Récupération des infos
+        const nom = document.getElementById('nom').value;
+        const gout = document.querySelector('input[name="Saveur"]:checked')?.value || "Non précisé";
+        const heure = document.getElementById('heure').value;
+        const tel = document.getElementById('tel').value || "Non précisé";
 
-    // Envoi du mail en arrière-plan immédiat
-    fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
+        // Envoi du mail en arrière-plan immédiat
+        fetch(this.action, { 
+            method: 'POST', 
+            body: new FormData(this), 
+            headers: { 'Accept': 'application/json' } 
+        });
 
-    // Afficher la fenêtre avec les boutons 1 et 2
-    const modal = document.getElementById('customModal');
-    modal.style.display = "block";
+        // Afficher la fenêtre personnalisée
+        document.getElementById('customModal').style.display = "block";
 
-    // Fonction pour ouvrir WhatsApp
-    function openWa(numero, responsable) {
-        const message = `Salut ${responsable} ! Je confirme ma commande :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
-        window.location.href = `https://wa.me/${numero}?text=${encodeURIComponent(message)}`;
-    }
+        // Fonction pour rediriger vers WhatsApp
+        function openWa(numero, responsable) {
+            const message = `Salut ${responsable} ! Je confirme ma commande :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
+            window.location.href = `https://wa.me/${numero}?text=${encodeURIComponent(message)}`;
+        }
 
-    // Clic sur bouton 1 (Kalash)
-    document.getElementById('choiceKalash').onclick = function() {
-        openWa("33685226577", "KALASH");
-    };
+        // Action des boutons 1 et 2
+        document.getElementById('choiceKalash').onclick = function() {
+            openWa("33685226577", "KALASH");
+        };
 
-    // Clic sur bouton 2 (Samuel)
-    document.getElementById('choiceSamuel').onclick = function() {
-        openWa("33767165980", "SAMUEL");
-    };
-});
-</script>
+        document.getElementById('choiceSamuel').onclick = function() {
+            openWa("33767165980", "SAMUEL");
+        };
+    });
+    </script>
 </body>
 </html>
