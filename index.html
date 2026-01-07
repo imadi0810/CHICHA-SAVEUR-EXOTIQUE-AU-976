@@ -126,5 +126,21 @@
             }, 1000); [cite: 44]
         });
     </script>
+document.getElementById('chichaForm').addEventListener('submit', function(e) {
+    // On laisse le formulaire s'envoyer à Formspree d'abord
+    setTimeout(function() {
+        // Affiche un message ou redirige vers le choix WhatsApp
+        const choice = confirm("Voulez-vous confirmer votre réservation sur WhatsApp avec le Responsable 1 ?\n(Cliquez sur 'Annuler' pour le Responsable 2)");
+        
+        if (choice) {
+            // Lien vers le Responsable 1
+            window.location.href = "https://wa.me/262639097721?text=Bonjour, je souhaite confirmer ma réservation de Chicha.";
+        } else {
+            // Lien vers le Responsable 2
+            window.location.href = "https://wa.me/262639401763?text=Bonjour, je souhaite confirmer ma réservation de Chicha.";
+        }
+    }, 1500); // Attend 1.5 seconde pour assurer l'envoi du mail
+});
+</script>
 </body>
 </html>
