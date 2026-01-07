@@ -101,27 +101,21 @@
             });
         });
 
-        <script>
 document.getElementById('chichaForm').addEventListener('submit', function(e) {
-    // Récupération des données pour le message WhatsApp
+    // 1. On récupère les valeurs immédiatement
     const nom = document.getElementById('nom').value;
-    const heure = document.getElementById('heure').value;
     const gout = document.querySelector('input[name="Saveur"]:checked').value;
+    const heure = document.getElementById('heure').value;
     const tel = document.getElementById('tel').value || "Non précisé";
 
-    // Délai pour laisser Formspree envoyer l'e-mail
-    setTimeout(function() {
-        const choice = confirm("Confirmer avec le Responsable 1 ?\n(Annuler pour le Responsable 2)");
-        
-        // Sélection du numéro (97721 ou 401763)
-        const monNumero = choice ? "262639097721" : "262639401763";
-        
-        // Construction du message final
-        const message = `Salut ! Réservation Saveur Exotique :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
-        
-        // Redirection vers WhatsApp
-        window.location.href = `https://wa.me/${monNumero}?text=${encodeURIComponent(message)}`;
-    }, 1500);
+    // 2. On prépare le message
+    const message = `Salut ! Réservation Saveur Exotique :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
+    const choice = confirm("Voulez-vous confirmer avec le Responsable 1 ?\n(Annuler pour le Responsable 2)");
+    const monNumero = choice ? "262639097721" : "262639401763";
+    
+    // 3. On ouvre WhatsApp dans un nouvel onglet AVANT que Formspree ne change de page
+    window.open(`https://wa.me/${monNumero}?text=${encodeURIComponent(message)}`, '_blank');
+   });
 });
 </script>
 </body>
