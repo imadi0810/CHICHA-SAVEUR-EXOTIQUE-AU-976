@@ -102,20 +102,28 @@
         });
 
 document.getElementById('chichaForm').addEventListener('submit', function(e) {
-    // 1. On récupère les valeurs immédiatement
+    // 1. Récupération des infos
     const nom = document.getElementById('nom').value;
     const gout = document.querySelector('input[name="Saveur"]:checked').value;
     const heure = document.getElementById('heure').value;
-    const tel = document.getElementById('tel').value || "Non précisé";
 
-    // 2. On prépare le message
-    const message = `Salut ! Réservation Saveur Exotique :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
-    const choice = confirm("Voulez-vous confirmer avec le Responsable 1 ?\n(Annuler pour le Responsable 2)");
-    const monNumero = choice ? "262639097721" : "262639401763";
+    // 2. LA QUESTION DE CHOIX (Obligatoire)
+    const choice = confirm("Cliquez sur OK pour le Responsable 1\nCliquez sur ANNULER pour le Responsable 2");
+
+    // 3. Attribution du numéro selon le clic
+    let monNumero;
+    if (choice === true) {
+        monNumero = "262639097721"; // Responsable 1
+    } else {
+        monNumero = "262639401763"; // Responsable 2
+    }
+
+    // 4. Préparation du message
+    const message = `Salut ! Réservation de ${nom} pour une chicha ${gout} à ${heure}`;
     
-    // 3. On ouvre WhatsApp dans un nouvel onglet AVANT que Formspree ne change de page
+    // 5. Ouverture WhatsApp immédiate
     window.open(`https://wa.me/${monNumero}?text=${encodeURIComponent(message)}`, '_blank');
-   });
+ });
 </script>
 </body>
 </html>
