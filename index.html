@@ -92,7 +92,7 @@
     </main>
 
   <script>
-// 1. Gestion visuelle des saveurs
+// 1. Gestion des saveurs
 const items = document.querySelectorAll('.flavor-item');
 items.forEach(item => {
     item.addEventListener('click', () => {
@@ -101,36 +101,38 @@ items.forEach(item => {
     });
 });
 
-// 2. Envoi discret et Choix WhatsApp
+// 2. Envoi et Fenêtre personnalisée
 document.getElementById('chichaForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Bloque la redirection pour poser la question
+    e.preventDefault(); 
 
-    // Récupération des infos
+    // Préparation des infos
     const nom = document.getElementById('nom').value;
     const gout = document.querySelector('input[name="Saveur"]:checked')?.value || "Non précisé";
     const heure = document.getElementById('heure').value;
     const tel = document.getElementById('tel').value || "Non précisé";
 
-    // LA QUESTION PERSONNALISÉE
-    const choice = confirm("Votre réservation est bien prise en compte par mail !\n\nVoulez-vous aussi la confirmer par WhatsApp ?\n\nOK pour 1 AVEC KALASH\nANNULER pour 2 AVEC SAMUEL");
+    // Envoi du mail en arrière-plan immédiat
+    fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
 
-    const monNumero = choice ? "33685226577" : "33767165980";
-    const responsable = choice ? "KALASH" : "SAMUEL";
-    const message = `Salut ${responsable} ! Je confirme ma commande :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
+    // Afficher la fenêtre avec les boutons 1 et 2
+    const modal = document.getElementById('customModal');
+    modal.style.display = "block";
 
-    // Envoi du mail en arrière-plan (le client reste sur la page)
-    const formData = new FormData(this);
-    fetch(this.action, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-    }).then(() => {
-        // Redirection vers WhatsApp dès que le mail est envoyé
-        window.location.href = `https://wa.me/${monNumero}?text=${encodeURIComponent(message)}`;
-    }).catch(() => {
-        // En cas de bug réseau, on ouvre quand même WhatsApp
-        window.location.href = `https://wa.me/${monNumero}?text=${encodeURIComponent(message)}`;
-    });
+    // Fonction pour ouvrir WhatsApp
+    function openWa(numero, responsable) {
+        const message = `Salut ${responsable} ! Je confirme ma commande :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
+        window.location.href = `https://wa.me/${numero}?text=${encodeURIComponent(message)}`;
+    }
+
+    // Clic sur bouton 1 (Kalash)
+    document.getElementById('choiceKalash').onclick = function() {
+        openWa("33685226577", "KALASH");
+    };
+
+    // Clic sur bouton 2 (Samuel)
+    document.getElementById('choiceSamuel').onclick = function() {
+        openWa("33767165980", "SAMUEL");
+    };
 });
 </script>
 </body>
