@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saveur Exotique au 976</title>
+    <style>
+        :root { --gold: #d4af37; --dark: #121212; --grey: #1e1e1e; --white: #ffffff; }
+        * { box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Arial', sans-serif; background-color: var(--dark); color: var(--white); scroll-behavior: smooth; }
+        
+        #welcome-screen { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://images.unsplash.com/photo-1517032223793-979924840e69?q=80&w=2070&auto=format&fit=crop'); background-size: cover; padding: 20px; }
+        .logo-container { width: 160px; height: 160px; border: 2px solid var(--gold); border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 50px; }
+        .btn-continue { padding: 15px 50px; background: transparent; color: white; border: 1px solid white; text-decoration: none; text-transform: uppercase; font-weight: bold; cursor: pointer; }
+
+        #reservation-section { padding: 40px 20px; max-width: 550px; margin: 0 auto; }
+        .promo-card { background: linear-gradient(135deg, #d4af37, #b8860b); color: black; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 30px; font-weight: bold; }
+        .flavor-selection { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
+        .flavor-item { background: var(--grey); border: 1px solid #333; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; transition: 0.2s; position: relative; }
+        .flavor-item input { margin-right: 10px; cursor: pointer; }
+        .flavor-item.selected { border-color: var(--gold); background: rgba(212, 175, 55, 0.4); }
+        
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: var(--gold); font-size: 0.9rem; }
+        input, textarea { width: 100%; padding: 14px; background: #252525; border: 1px solid #444; border-radius: 8px; color: white; font-size: 1rem; }
+        
+        .payment-card { background: #fff; color: #000; padding: 25px; border-radius: 15px; text-align: center; margin: 40px 0; }
+        .payment-card img { width: 200px; height: auto; margin: 15px 0; }
+        
+        .submit-btn { width: 100%; padding: 18px; background: var(--gold); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 1rem; }
+        footer { text-align: center; padding: 40px 0; color: #666; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <section id="welcome-screen">
+        <h1 style="font-size: 1.8rem; font-weight: 300;">Bienvenue à la</h1>
+        <p style="color: #888; margin-bottom: 40px;">Saveur Exotique au 976</p>
+        <div class="logo-container">
+            <span style="font-size: 0.8rem; color: var(--gold); letter-spacing: 3px;">CHICHA</span>
+            <span style="font-size: 1.4rem; font-weight: bold;">CÉLESTE</span>
+        </div>
+        <a href="#reservation-section" class="btn-continue">Continuer</a>
+    </section>
+
+    <main id="reservation-section">
+        <div class="promo-card">SESSION CHICHA : 10€ <br><small>45 min de pur plaisir</small></div>
+
+        <form id="chichaForm" action="https://formspree.io/f/idaroussemadi7@gmail.com" method="POST">
+            <label>Choisissez votre saveur :</label>
+            <div class="flavor-selection">
+                <label class="flavor-item"><input type="radio" name="Saveur" value="Hawai" required> 🍍 Hawai</label>
+                <label class="flavor-item"><input type="radio" name="Saveur" value="Lady Killer"> 🍓 Lady Killer</label>
+                <label class="flavor-item"><input type="radio" name="Saveur" value="Love 66"> ❤️ Love 66</label>
+                <label class="flavor-item"><input type="radio" name="Saveur" value="Mango"> 🥭 Mango</label>
+            </div>
+
+            <div class="form-group">
+                <label>Nom & Prénom</label>
+                <input type="text" name="Nom_Client" id="nom" placeholder="Ton nom" required>
+            </div>
+
+            <div class="form-group">
+                <label>Heure (18h-00h)</label>
+                <input type="time" name="Heure" id="heure" min="18:00" max="23:59" required>
+            </div>
+
+            <div class="form-group">
+                <label>Téléphone (Facultatif)</label>
+                <input type="tel" name="Telephone" id="tel" placeholder="06XXXXXXXX">
+            </div>
+
+            <div class="form-group">
+                <label>Commentaire</label>
+                <textarea name="Message" id="comm" rows="3"></textarea>
+            </div>
+
+            <div class="payment-card">
+                <p><strong>Paiement Révolut</strong></p>
+                <img src="qr-revolut.jpg" alt="Scannez pour payer">
+                <br><a href="https://revolut.me/idarou78m/pocket/" style="color: #0075eb; font-weight: bold; text-decoration: none;">revolut.me/idarou78m</a>
+            </div>
+
+            <button type="submit" class="submit-btn">Réserver & Envoyer WhatsApp</button>
+        </form>
+
+        <footer>
+            <strong>Au 976</strong><br>
+            340 avenue de Fronton, 31200 Toulouse <br>
+            Ouvert de 18:00 à 00:00
+        </footer>
+    </main>
+
+    <script>
+        // Gestion visuelle des saveurs
+        const items = document.querySelectorAll('.flavor-item');
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+                items.forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+            });
+        });
+
+        // Envoi WhatsApp après l'e-mail
+        document.getElementById('chichaForm').addEventListener('submit', function(e) {
+            const nom = document.getElementById('nom').value;
+            const heure = document.getElementById('heure').value;
+            const gout = document.querySelector('input[name="Saveur"]:checked').value;
+            const tel = document.getElementById('tel').value || "Non précisé";
+            const comm = document.getElementById('comm').value || "Aucun";
+            
+            // CONFIGURATION DES DEUX NUMÉROS
+            const num1 = "33685226577"; [cite: 39]
+            const num2 = "33767165980"; [cite: 40]
+            
+            // Demande au client à quel responsable envoyer le message
+            const choix = confirm("Envoyer la réservation au Responsable 1 ? (Cliquez sur Annuler pour le Responsable 2)"); [cite: 41]
+            const monNumero = choix ? num1 : num2; [cite: 41]
+            
+            const messageWhatsApp = `Salut ! Nouvelle réservation pour Saveur Exotique :\n\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}\n💬 Comm: ${comm}`; [cite: 42]
+            const whatsappUrl = `https://wa.me/${monNumero}?text=${encodeURIComponent(messageWhatsApp)}`; [cite: 43]
+            
+            // On ouvre WhatsApp après 1 seconde
+            setTimeout(() => {
+                window.open(whatsappUrl, '_blank');
+            }, 1000); [cite: 44]
+        });
+    </script>
+</body>
+</html>
