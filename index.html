@@ -125,21 +125,21 @@
                 window.open(whatsappUrl, '_blank');
             }, 1000); [cite: 44]
         });
-    </script>
+<script>
 document.getElementById('chichaForm').addEventListener('submit', function(e) {
-    // On laisse le formulaire s'envoyer à Formspree d'abord
+    // Ce code attend que le formulaire soit envoyé à Formspree
     setTimeout(function() {
-        // Affiche un message ou redirige vers le choix WhatsApp
-        const choice = confirm("Voulez-vous confirmer votre réservation sur WhatsApp avec le Responsable 1 ?\n(Cliquez sur 'Annuler' pour le Responsable 2)");
+        // Cette fenêtre demande au client de choisir son responsable
+        const choice = confirm("Voulez-vous confirmer avec le Responsable 1 ?\n(Cliquez sur 'Annuler' pour le Responsable 2)");
         
         if (choice) {
-            // Lien vers le Responsable 1
+            // Lien vers le Responsable 1 (262639097721)
             window.location.href = "https://wa.me/262639097721?text=Bonjour, je souhaite confirmer ma réservation de Chicha.";
         } else {
-            // Lien vers le Responsable 2
+            // Lien vers le Responsable 2 (262639401763)
             window.location.href = "https://wa.me/262639401763?text=Bonjour, je souhaite confirmer ma réservation de Chicha.";
         }
-    }, 1500); // Attend 1.5 seconde pour assurer l'envoi du mail
+    }, 1500); // 1.5 seconde d'attente pour laisser le mail partir
 });
 </script>
 </body>
