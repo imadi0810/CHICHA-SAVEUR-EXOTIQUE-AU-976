@@ -91,8 +91,8 @@
         </footer>
     </main>
 
-   <script>
-// --- PARTIE 1 : GESTION DES SAVEURS ---
+  <script>
+// 1. Gestion visuelle des saveurs (clic sur les images)
 const items = document.querySelectorAll('.flavor-item');
 items.forEach(item => {
     item.addEventListener('click', () => {
@@ -101,19 +101,35 @@ items.forEach(item => {
     });
 });
 
-// --- PARTIE 2 : ENVOI FORMULAIRE + WHATSAPP ---
+// 2. Envoi du mail et redirection WhatsApp avec choix du responsable
 document.getElementById('chichaForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Empêche de quitter la page immédiatement
+
+    // Récupération des données du formulaire
     const nom = document.getElementById('nom').value;
     const gout = document.querySelector('input[name="Saveur"]:checked')?.value || "Non précisé";
     const heure = document.getElementById('heure').value;
     const tel = document.getElementById('tel').value || "Non précisé";
 
-    setTimeout(function() {
-        const choice = confirm("Mail envoyé ! Confirmer avec le Responsable 1 ?\n(Annuler pour le Responsable 2)");
-        const monNumero = choice ? "33685226577" : "33767165980";
-        const message = `Salut ! Réservation Saveur Exotique :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
-        
+    // LA QUESTION PERSONNALISÉE
+    const choice = confirm("Voulez-vous aussi confirmer votre commande par WhatsApp ?\n\nOK pour KALASH\nANNULER pour SAMUEL");
+
+    const monNumero = choice ? "262639097721" : "262639401763";
+    const responsable = choice ? "KALASH" : "SAMUEL";
+    const message = `Salut ${responsable} ! Je confirme ma commande :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
+
+    // Envoi du mail en arrière-plan (le client ne voit rien)
+    const formData = new FormData(this);
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+    }).then(() => {
+        // Redirection vers WhatsApp dès que le mail est envoyé
         window.location.href = `https://wa.me/${monNumero}?text=${encodeURIComponent(message)}`;
-    }, 2000);
+    }).catch(() => {
+        // En cas de problème réseau, on lance quand même WhatsApp
+        window.location.href = `https://wa.me/${monNumero}?text=${encodeURIComponent(message)}`;
+    });
 });
 </script>
