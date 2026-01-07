@@ -34,7 +34,7 @@
 <body>
 
     <section id="welcome-screen">
-        <h1 style="font-size: 1.8rem; font-weight: 300;">Bienvenue à la</h1>
+        <h1 style="font-size: 1.8rem; font-weight: 300;">Bienvenue</h1>
         <p style="color: #888; margin-bottom: 40px;">Saveur Exotique au 976</p>
         <div class="logo-container">
             <span style="font-size: 0.8rem; color: var(--gold); letter-spacing: 3px;">CHICHA</span>
@@ -112,9 +112,9 @@ document.getElementById('chichaForm').addEventListener('submit', function(e) {
     const tel = document.getElementById('tel').value || "Non précisé";
 
     // LA QUESTION PERSONNALISÉE
-    const choice = confirm("Voulez-vous aussi confirmer votre commande par WhatsApp ?\n\nOK pour KALASH\nANNULER pour SAMUEL");
+    const choice = confirm("Voulez-vous aussi confirmer votre commande par WhatsApp ?\n\nOUI 1 AVEC KALASH\nOUI 2 AVEC SAMUEL");
 
-    const monNumero = choice ? "262639097721" : "262639401763";
+    const monNumero = choice ? "33685226577" : "33767165980";
     const responsable = choice ? "KALASH" : "SAMUEL";
     const message = `Salut ${responsable} ! Je confirme ma commande :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
 
