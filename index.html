@@ -47,15 +47,34 @@
 </head>
 <body>
 
-    <section id="welcome-screen">
-        <h1 style="font-size: 1.8rem; font-weight: 300;">Bienvenue</h1>
-        <p style="color: #888; margin-bottom: 40px;">Saveur Exotique au 976</p>
-        <div class="logo-container">
-            <span style="font-size: 0.8rem; color: var(--gold); letter-spacing: 3px;">CHICHA</span>
-            <span style="font-size: 1.4rem; font-weight: bold;">CÉLESTE</span>
+   <section id="welcome-screen" style="position: relative; height: 100vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+    
+    <video autoplay muted loop playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
+        <source src="ambiance.mp4" type="video/mp4">
+    </video>
+
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 0;"></div>
+
+    <div style="position: relative; z-index: 1; padding: 20px;">
+        <h1 style="font-size: 2.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8);">
+            SAVEUR EXOTIQUE AU 976
+        </h1>
+        <p style="color: #ddd; font-size: 1.2rem; margin-bottom: 40px; text-shadow: 1px 1px 5px rgba(0,0,0,0.8);">
+            Saveur Exotique à Toulouse au 976
+        </p>
+        
+        <div style="display: flex; gap: 15px; flex-direction: column; align-items: center;">
+            <a href="#reservation-section" class="btn-continue" style="width: 250px; background: #d4af37; color: black; border: none; padding: 15px; text-decoration: none; text-transform: uppercase; font-weight: bold; border-radius: 5px;">RÉSERVER</a>
+            
+            <a href="https://www.google.com/maps/dir//340+Av.+de+Fronton,+31200+Toulouse" 
+               target="_blank" 
+               class="btn-continue" 
+               style="width: 250px; background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); border: 1px solid white; padding: 15px; color: white; text-decoration: none; text-transform: uppercase; font-weight: bold; border-radius: 5px;">
+               PLAN D'ACCÈS
+            </a>
         </div>
-        <a href="#reservation-section" class="btn-continue">Continuer</a>
-    </section>
+    </div>
+</section>
 
     <main id="reservation-section">
         <div class="promo-card">SESSION CHICHA : 10€ <br><small>45 min de pur plaisir</small></div>
