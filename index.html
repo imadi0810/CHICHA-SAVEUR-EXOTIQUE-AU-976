@@ -153,50 +153,58 @@
     </div>
 
     <script>
-    // 1. Gestion visuelle des saveurs
-    const items = document.querySelectorAll('.flavor-item');
-    items.forEach(item => {
-        item.addEventListener('click', () => {
-            items.forEach(i => i.classList.remove('selected'));
-            item.classList.add('selected');
-        });
+// 1. Gestion visuelle des saveurs
+const items = document.querySelectorAll('.flavor-item');
+items.forEach(item => {
+    item.addEventListener('click', () => {
+        items.forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+        // On coche le bouton radio invisible pour la validation du formulaire
+        item.querySelector('input').checked = true;
+    });
+});
+
+// 2. Envoi Formulaire + Fenêtre de choix
+document.getElementById('chichaForm').addEventListener('submit', function(e) {
+    // Correction iPhone : On vérifie si le formulaire est valide avant de continuer
+    if (!this.checkValidity()) {
+        return; // Le navigateur affichera les messages d'erreur (ex: choisir l'heure)
+    }
+
+    e.preventDefault(); // On bloque l'envoi classique pour afficher notre fenêtre WhatsApp
+
+    // RÉCUPÉRATION DES INFOS
+    const nom = document.getElementById('nom').value;
+    const chicha = document.getElementById('chicha-type').value || "Non précisée"; // Récupère Celeste/El-Badia
+    const gout = document.querySelector('input[name="Saveur"]:checked')?.value || "Non précisé";
+    const heure = document.getElementById('heure').value;
+    const tel = document.getElementById('tel').value || "Non précisé";
+
+    // Envoi du mail en arrière-plan (Formspree)
+    fetch(this.action, { 
+        method: 'POST', 
+        body: new FormData(this), 
+        headers: { 'Accept': 'application/json' } 
     });
 
-    // 2. Envoi Formulaire + Fenêtre de choix
-    document.getElementById('chichaForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // On reste sur la page pour afficher le choix
+    // Afficher la fenêtre de choix du contact
+    document.getElementById('customModal').style.display = "block";
 
-        // Récupération des infos
-        const nom = document.getElementById('nom').value;
-        const gout = document.querySelector('input[name="Saveur"]:checked')?.value || "Non précisé";
-        const heure = document.getElementById('heure').value;
-        const tel = document.getElementById('tel').value || "Non précisé";
+    // Fonction pour rediriger vers WhatsApp avec TOUTES les infos
+    function openWa(numero, responsable) {
+        const message = `Salut ${responsable} ! Je confirme ma commande :\n👤 Nom: ${nom}\n💨 Modèle: ${chicha}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
+        window.location.href = `https://wa.me/${numero}?text=${encodeURIComponent(message)}`;
+    }
 
-        // Envoi du mail en arrière-plan immédiat
-        fetch(this.action, { 
-            method: 'POST', 
-            body: new FormData(this), 
-            headers: { 'Accept': 'application/json' } 
-        });
+    // Action des boutons 1 et 2
+    document.getElementById('choiceKalash').onclick = function() {
+        openWa("33685226577", "KALASH");
+    };
 
-        // Afficher la fenêtre personnalisée
-        document.getElementById('customModal').style.display = "block";
-
-        // Fonction pour rediriger vers WhatsApp
-        function openWa(numero, responsable) {
-            const message = `Salut ${responsable} ! Je confirme ma commande :\n👤 Nom: ${nom}\n🌬️ Goût: ${gout}\n⏰ Heure: ${heure}\n📞 Tel: ${tel}`;
-            window.location.href = `https://wa.me/${numero}?text=${encodeURIComponent(message)}`;
-        }
-
-        // Action des boutons 1 et 2
-        document.getElementById('choiceKalash').onclick = function() {
-            openWa("33685226577", "KALASH");
-        };
-
-        document.getElementById('choiceSamuel').onclick = function() {
-            openWa("33767165980", "SAMUEL");
-        };
-    });
-    </script>
+    document.getElementById('choiceSamuel').onclick = function() {
+        openWa("33767165980", "SAMUEL");
+    };
+});
+</script>
 </body>
 </html>
