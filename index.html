@@ -89,6 +89,22 @@
                 <label class="flavor-item"><input type="radio" name="Saveur" value="Mango"> 🥭 Mango</label>
             </div>
 
+             <div style="margin-bottom: 25px; text-align: left;">
+              <label for="chicha-type" style="color: #00d4ff; display: block; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">
+               🔹 Modèle de chicha souhaité :
+           </label>
+             <select id="chicha-type" name="chicha-type" style="width: 100%; padding: 15px; border-radius: 8px; border: 2px solid #00d4ff; background: rgba(0, 20, 40, 0.8); color: white; font-size: 1rem; cursor: pointer; outline: none; box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);">
+              <option value="" disabled selected>Choisissez votre modèle...</option>
+               <option value="celeste">Celeste (Classique & Efficace)</option>
+               <option value="el-badia">El-Badia (Performance & Design)</option>
+              </select>
+           </div>
+
+          <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <input type="text" placeholder="NOM" style="flex: 1; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background: white;">
+            <input type="text" placeholder="PRÉNOM" style="flex: 1; padding: 15px; border-radius: 5px; border: 1px solid #ccc; background: white;">
+          </div>
+
             <div class="form-group">
                 <label>Nom & Prénom</label>
                 <input type="text" name="Nom_Client" id="nom" placeholder="Ton nom" required>
