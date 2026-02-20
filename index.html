@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saveur Exotique au 976</title>
+    <style>
+        :root { --gold: #d4af37; --dark: #121212; --grey: #1e1e1e; --white: #ffffff; }
+        * { box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Arial', sans-serif; background-color: var(--dark); color: var(--white); scroll-behavior: smooth; }
+        
+        #welcome-screen { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: url('saveur.jpg') no-repeat center center; background-size: cover; padding: 20px; position: relative; }
+        #welcome-screen::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 0; }
+        .welcome-content { position: relative; z-index: 1; }
+
+        #reservation-section { padding: 40px 20px; max-width: 550px; margin: 0 auto; }
+        .promo-card { background: linear-gradient(135deg, #d4af37, #b8860b); color: black; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 30px; font-weight: bold; }
+        .flavor-selection { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
+        .flavor-item { background: var(--grey); border: 1px solid #333; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; transition: 0.2s; position: relative; }
+        .flavor-item input { margin-right: 10px; cursor: pointer; }
+        .flavor-item.selected { border-color: var(--gold); background: rgba(212, 175, 55, 0.4); }
+        
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; margin-bottom: 8px; color: var(--gold); font-size: 0.9rem; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 14px; background: #252525; border: 1px solid #444; border-radius: 8px; color: white; font-size: 1rem; }
+        
+        .payment-card { background: #fff; color: #000; padding: 25px; border-radius: 15px; text-align: center; margin: 40px 0; }
+        .payment-card img { width: 200px; height: auto; margin: 15px 0; }
+        
+        .submit-btn { width: 100%; padding: 18px; background: var(--gold); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 1rem; color: black; }
+        footer { text-align: center; padding: 40px 0; color: #666; font-size: 0.85rem; }
+
+        /* --- STYLE MENU COCKTAIL (LIVRE OVERLAY) --- */
+        #cocktail-overlay {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            background: url('fond-exotique.jpg') no-repeat center center; background-size: cover; overflow-y: auto;
+        }
+        .overlay-dark { background: rgba(0,0,0,0.8); min-height: 100%; padding: 40px 20px; }
+        .close-overlay { position: absolute; top: 20px; right: 20px; font-size: 2rem; color: var(--gold); cursor: pointer; font-weight: bold; }
+
+        /* --- MODAL WHATSAPP --- */
+        #customModal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); }
+        .modal-content { background-color: #ffffff; margin: 15% auto; padding: 30px; border-radius: 20px; width: 85%; max-width: 400px; text-align: center; color: #000; }
+        .modal-buttons { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
+        .btn-kalash { background-color: #007bff; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .btn-samuel { background-color: #28a745; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<section id="welcome-screen">
+    <div class="welcome-content">
+        <img src="chicha-logo.png" alt="Logo" style="width: 80px; margin-bottom: 20px;">
+        <h1 style="font-size: 2.2rem; font-weight: 800; text-transform: uppercase; color: white; text-shadow: 2px 2px 10px rgba(0,0,0,0.8);">SAVEUR EXOTIQUE AU 976</h1>
+        <p style="color: #ffffff; font-size: 1.2rem; margin-bottom: 40px;">BIENVENUE</p>
+
+        <div style="display: flex; gap: 15px; flex-direction: column; align-items: center;">
+            <a href="#reservation-section" style="width: 250px; background: #d4af37; color: black; padding: 15px; text-decoration: none; text-transform: uppercase; font-weight: bold; border-radius: 5px;">RÉSERVER CHICHA</a>
+            <button onclick="openCocktails()" style="width: 250px; background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); border: 1px solid white; padding: 15px; color: white; text-transform: uppercase; font-weight: bold; border-radius: 5px; cursor: pointer;">NOTRE CARTE COCKTAILS</button>
+            <a href="https://www.google.com/maps/search/?api=1&query=340+Avenue+de+Fronton+Toulouse" target="_blank" style="width: 250px; background: transparent; border: 1px solid #666; padding: 15px; color: #ccc; text-decoration: none; text-transform: uppercase; font-size: 0.8rem; border-radius: 5px; margin-top: 10px;">PLAN D'ACCÈS</a>
+        </div>
+    </div>
+</section>
+
+<main id="reservation-section">
+    <div class="promo-card">SESSION CHICHA : 10€ <br><small>45 min de pur plaisir</small></div>
+    <form id="chichaForm" action="https://formspree.io/f/mkogdjrr" method="POST">
+        <label>Choisissez votre saveur :</label>
+        <div class="flavor-selection">
+            <label class="flavor-item"><input type="radio" name="Saveur" value="Hawai" required> 🍍 Hawai</label>
+            <label class="flavor-item"><input type="radio" name="Saveur" value="Lady Killer"> 🍓 Lady Killer</label>
+            <label class="flavor-item"><input type="radio" name="Saveur" value="Love 66"> ❤️ Love 66</label>
+            <label class="flavor-item"><input type="radio" name="Saveur" value="Mango"> 🥭 Mango</label>
+        </div>
+
+        <div class="form-group">
+            <label>Modèle de chicha :</label>
+            <select name="Modele" id="chicha-type" style="border: 2px solid var(--gold);">
+                <option value="Celeste">Celeste</option>
+                <option value="El-Badia">El-Badia</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Nom & Prénom</label>
+            <input type="text" name="Nom_Client" id="nom" placeholder="Ton nom" required>
+        </div>
+
+        <div class="form-group">
+            <label>Heure (18h-00h)</label>
+            <input type="time" name="Heure" id="heure" min="18:00" max="23:59" required>
+        </div>
+
+        <div class="form-group">
+            <label>Localisation</label>
+            <select name="Localisation" id="loc">
+                <option value="Interieur">📍 Intérieur</option>
+                <option value="Exterieur">🌿 Extérieur / Terrasse</option>
+            </select>
+        </div>
+
+        <div class="payment-card">
+            <p><strong>SCANNEZ LE QR CODE POUR PAYER (10€)</strong></p>
+            <img src="qr-revolut.jpg" alt="Paiement">
+            <br><a href="https://revolut.me/idarou78m/pocket/DVCGkcfxK4" target="_blank" style="color: #0075eb; font-weight: bold; text-decoration: none;">CLIQUER ICI POUR PAYER</a>
+        </div>
+        <button type="submit" class="submit-btn">Réserver la Chicha</button>
+    </form>
+</main>
+
+<div id="cocktail-overlay">
+    <div class="overlay-dark">
+        <span class="close-overlay" onclick="closeCocktails()">×</span>
+        <div style="max-width: 550px; margin: 0 auto; text-align: center;">
+            <h2 style="color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-size: 2rem;">Menu Cocktails</h2>
+            <p style="margin-bottom: 30px;">Choisissez votre boisson exotique</p>
+
+            <form id="cocktailForm" action="https://formspree.io/f/mkogdjrr" method="POST">
+                <div class="flavor-selection">
+                    <label class="flavor-item"><span>🍸 Gin Fiz</span><input type="radio" name="Cocktail" value="Gin Fiz" required><br><small style="color:#28a745">Stock OK</small></label>
+                    <label class="flavor-item"><span>🍯 Moscow Mule</span><input type="radio" name="Cocktail" value="Moscow Mule"><br><small style="color:#28a745">Stock OK</small></label>
+                    <label class="flavor-item"><span>🌴 Exotic Summer</span><input type="radio" name="Cocktail" value="Exotic Summer"><br><small style="color:#28a745">Stock OK</small></label>
+                    <label class="flavor-item"><span>🍓 Sweet Label</span><input type="radio" name="Cocktail" value="Sweet Label"><br><small style="color:#dc3545">Rupture</small></label>
+                </div>
+
+                <div class="form-group">
+                    <label>Quantité :</label>
+                    <select name="Quantite" id="c-qty">
+                        <option value="1">1 Cocktail (10€)</option>
+                        <option value="2">2 Cocktails (20€)</option>
+                        <option value="3">3 Cocktails (30€)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Nom & Prénom :</label>
+                    <input type="text" name="Nom" id="cnom" placeholder="Ton nom" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Heure :</label>
+                    <input type="time" id="cheure" required>
+                </div>
+
+                <div class="payment-card">
+                    <p><strong>SCANNEZ POUR RÉGLER VOS COCKTAILS</strong></p>
+                    <img src="qr-revolut.jpg" alt="Paiement">
+                    <br><a href="https://revolut.me/idarou78m/pocket/DVCGkcfxK4" target="_blank" style="color: #0075eb; font-weight: bold; text-decoration: none;">PAYER EN LIGNE</a>
+                </div>
+
+                <button type="submit" class="submit-btn">Commander Cocktail</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="customModal">
+    <div class="modal-content">
+        <h2 style="margin-top:0">Confirmation !</h2>
+        <p>Validez votre commande sur WhatsApp :</p>
+        <div class="modal-buttons">
+            <button id="choiceKalash" class="btn-kalash">1 AVEC KALASH</button>
+            <button id="choiceSamuel" class="btn-samuel">2 AVEC SAMUEL</button>
+        </div>
+    </div>
+</div>
+
+<footer><strong>Au 976</strong><br>340 avenue de Fronton, 31200 Toulouse</footer>
+
+<script>
+    // Fonctions pour l'ouverture du "Livre" Cocktails
+    function openCocktails() { document.getElementById('cocktail-overlay').style.display = 'block'; document.body.style.overflow = 'hidden'; }
+    function closeCocktails() { document.getElementById('cocktail-overlay').style.display = 'none'; document.body.style.overflow = 'auto'; }
+
+    // Gestion visuelle des saveurs/cocktails
+    document.querySelectorAll('.flavor-item').forEach(item => {
+        item.addEventListener('click', () => {
+            item.parentElement.querySelectorAll('.flavor-item').forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            item.querySelector('input').checked = true;
+        });
+    });
+
+    // Envoi Unique WhatsApp & Mail
+    function initForm(formId, type) {
+        document.getElementById(formId).addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(!this.checkValidity()) return;
+
+            const nom = document.getElementById(type === 'chicha' ? 'nom' : 'cnom').value;
+            const choix = type === 'chicha' ? document.querySelector('input[name="Saveur"]:checked').value : document.querySelector('input[name="Cocktail"]:checked').value;
+            const heure = document.getElementById(type === 'chicha' ? 'heure' : 'cheure').value;
+            const detail = type === 'chicha' ? document.getElementById('chicha-type').value : "Qté: " + document.getElementById('c-qty').value;
+
+            // Formspree
+            fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
+
+            // WhatsApp Modal
+            document.getElementById('customModal').style.display = "block";
+            const msg = `Salut ! Je commande :\nType: ${type}\nChoix: ${choix}\nDétail: ${detail}\nClient: ${nom}\nHeure: ${heure}`;
+            
+            document.getElementById('choiceKalash').onclick = () => window.location.href = `https://wa.me/33685226577?text=${encodeURIComponent(msg)}`;
+            document.getElementById('choiceSamuel').onclick = () => window.location.href = `https://wa.me/33767165980?text=${encodeURIComponent(msg)}`;
+        });
+    }
+
+    initForm('chichaForm', 'chicha');
+    initForm('cocktailForm', 'cocktail');
+</script>
+
+</body>
+</html>
