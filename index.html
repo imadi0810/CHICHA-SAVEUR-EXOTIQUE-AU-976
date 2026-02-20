@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saveur Exotique au 976</title>
+    <style>
+        :root { --gold: #d4af37; --blue: #00d4ff; --dark: #121212; --grey: #1e1e1e; --white: #ffffff; --link-blue: #3498db; }
+        * { box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Arial', sans-serif; background-color: var(--dark); color: var(--white); scroll-behavior: smooth; }
+        
+        /* ACCUEIL */
+        #welcome-screen { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: url('00o.png') no-repeat center center; background-size: cover; position: relative; }
+        #welcome-screen::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 0; }
+        .content { position: relative; z-index: 1; padding: 20px; }
+
+        /* SECTIONS */
+        #reservation-section { padding: 40px 20px; max-width: 550px; margin: 0 auto; }
+        .promo-card { background: linear-gradient(135deg, #d4af37, #b8860b); color: black; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 30px; font-weight: bold; }
+        .flavor-selection { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
+        .flavor-item { background: var(--grey); border: 1px solid #333; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .flavor-item.selected { border-color: var(--gold); background: rgba(212, 175, 55, 0.4); }
+        .cocktail-selected { border-color: var(--blue) !important; background: rgba(0, 212, 255, 0.2) !important; }
+        
+        label { display: block; margin-bottom: 8px; color: var(--gold); font-weight: bold; text-align: left; text-transform: uppercase; }
+        input, select, textarea { width: 100%; padding: 14px; background: #252525; border: 1px solid #444; border-radius: 8px; color: white; margin-bottom: 15px; }
+        
+        .payment-card { background: #fff; color: #000; padding: 25px; border-radius: 15px; text-align: center; margin: 30px 0; }
+        .payment-card img { width: 220px; height: auto; }
+        .pay-link { color: var(--link-blue); font-weight: bold; text-decoration: none; font-size: 1.1rem; display: inline-block; margin-top: 10px; }
+
+        /* OVERLAY COCKTAIL */
+        #cocktail-overlay { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow-y: auto; }
+        #cocktail-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: black; }
+        .c-slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; transition: opacity 1.5s ease-in-out; opacity: 0; }
+        .overlay-dark { background: rgba(0,0,0,0.85); min-height: 100%; padding: 40px 20px; position: relative; }
+        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 2.5rem; color: var(--blue); cursor: pointer; z-index: 10; }
+        
+        /* MODAL */
+        #customModal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
+        .modal-content { background: white; margin: 15% auto; padding: 30px; border-radius: 20px; text-align: center; color: black; max-width: 450px; width: 90%; margin: auto; }
+        .btn-wa { width: 100%; padding: 15px; margin-top: 10px; border-radius: 10px; border: none; font-weight: bold; color: white; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<section id="welcome-screen">
+    <div class="content">
+        <img src="chicha-logo.png" alt="Logo" style="width: 80px; margin-bottom: 20px;">
+        <h1 style="text-transform: uppercase;">SAVEUR EXOTIQUE AU 976</h1>
+        <p style="margin-bottom: 40px;">BIENVENUE</p>
+        <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+            <a href="#reservation-section" style="width: 250px; background: var(--gold); color: black; padding: 15px; text-decoration: none; font-weight: bold; border-radius: 5px; display: block;">RÉSERVER CHICHA</a>
+            <button onclick="openCocktails()" style="width: 250px; background: var(--blue); border: none; padding: 15px; color: black; font-weight: bold; border-radius: 5px; cursor: pointer;">NOTRE CARTE COCKTAILS</button>
+            <a href="https://www.google.com/maps/search/?api=1&query=340+Avenue+de+Fronton+Toulouse" target="_blank" style="width: 250px; background: rgba(255,255,255,0.1); border: 1px solid white; padding: 15px; color: white; text-decoration: none; text-transform: uppercase; font-weight: bold; border-radius: 5px;">PLAN D'ACCÈS</a>
+        </div>
+    </div>
+</section>
+
+<main id="reservation-section">
+    <div class="promo-card">SESSION CHICHA : 10€ <br><small>45 min de pur plaisir</small></div>
+    <form id="chichaForm" action="https://formspree.io/f/mkogdjrr" method="POST">
+        <label>CHOISISSEZ VOTRE SAVEUR :</label>
+        <div class="flavor-selection">
+            <label class="flavor-item"><input type="radio" name="Saveur" value="Hawai" required> 🍍 Hawai</label>
+            <label class="flavor-item"><input type="radio" name="Saveur" value="Lady Killer"> 🍓 Lady Killer</label>
+            <label class="flavor-item"><input type="radio" name="Saveur" value="Love 66"> ❤️ Love 66</label>
+            <label class="flavor-item"><input type="radio" name="Saveur" value="Mango"> 🥭 Mango</label>
+        </div>
+        <label>NOM :</label> <input type="text" id="nom" name="Nom" required>
+        <label>PRÉNOM :</label> <input type="text" id="prenom" name="Prenom" required>
+        <label>TÉLÉPHONE :</label> <input type="tel" id="tel" name="Telephone" required>
+        <label>HEURE (18:00 - 00:30) :</label> <input type="time" id="heure" name="Heure" min="18:00" max="00:30" required>
+        <label>COMMENTAIRE :</label> <textarea id="comm" name="Message" rows="2" placeholder="Précisez votre emplacement..."></textarea>
+        
+        <div class="payment-card">
+            <p><strong>SCANNEZ POUR PAYER (10€)</strong></p>
+            <img src="qr-revolut.jpg">
+            <br><a href="https://revolut.me/idarou78m/pocket/DVCGkcfxK4" target="_blank" class="pay-link">CLIQUER ICI POUR PAYER EN LIGNE</a>
+        </div>
+        <button type="submit" style="width:100%; padding:18px; background:var(--gold); border:none; font-weight:bold; border-radius:8px; cursor:pointer;">RÉSERVER CHICHA</button>
+    </form>
+</main>
+
+<div id="cocktail-overlay">
+    <div id="cocktail-bg">
+        <div class="c-slide" style="background-image: url('saveur.jpg'); opacity: 1;"></div>
+        <div class="c-slide" style="background-image: url('saveur1.jpg');"></div>
+        <div class="c-slide" style="background-image: url('saveur2.jpg');"></div>
+        <div class="c-slide" style="background-image: url('saveur3.jpg');"></div>
+        <div class="c-slide" style="background-image: url('saveur4.jpg');"></div>
+        <div class="c-slide" style="background-image: url('saveur5.jpg');"></div>
+    </div>
+    <div class="overlay-dark">
+        <span class="close-btn" onclick="closeCocktails()">×</span>
+        <div style="max-width: 500px; margin: 0 auto; text-align: center;">
+            <h2 style="color: var(--blue);">CARTE DES COCKTAILS</h2>
+            <form id="cocktailForm" action="https://formspree.io/f/mkogdjrr" method="POST">
+                <div class="flavor-selection">
+                    <label class="flavor-item">🍸 Mojito<input type="radio" name="Cocktail" value="Mojito" required></label>
+                    <label class="flavor-item">🍯 Moscow Mule<input type="radio" name="Cocktail" value="Moscow Mule"></label>
+                    <label class="flavor-item">🍸 Gin Fiz<input type="radio" name="Cocktail" value="Gin Fiz"></label>
+                    <label class="flavor-item">🌴 Exotic Summer<input type="radio" name="Cocktail" value="Exotic Summer"></label>
+                </div>
+                
+                <label style="color:var(--blue)">MOJITO / GIN FIZ :</label>
+                <select name="Option_Alcool"><option value="Avec Alcool">Avec Alcool</option><option value="Virgin">Virgin (Sans Alcool)</option></select>
+                
+                <label style="color:var(--blue)">TYPE DE MULE :</label>
+                <select name="Option_Mule"><option value="Moscow">Moscow Mule</option><option value="London">London Mule</option><option value="Jamaicain">Jamaicain Mule</option></select>
+                
+                <label style="color:var(--blue)">QUANTITÉ :</label> <select name="Quantite" id="c-qty"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                <input type="text" id="cnom" name="Nom_Cocktail" placeholder="NOM & PRÉNOM" required>
+                <label style="color:var(--blue)">HEURE (18:00 - 00:30) :</label> <input type="time" id="cheure" name="Heure_Cocktail" min="18:00" max="00:30" required>
+
+                <div class="payment-card">
+                    <p><strong>RÈGLEMENT (10€/cocktail)</strong></p>
+                    <img src="qr-revolut.jpg">
+                    <br><a href="https://revolut.me/idarou78m/pocket/DVCGkcfxK4" target="_blank" class="pay-link">CLIQUER ICI POUR PAYER EN LIGNE</a>
+                </div>
+                <button type="submit" style="width:100%; padding:18px; background:var(--blue); border:none; font-weight:bold; border-radius:8px; color:black; cursor: pointer;">COMMANDER COCKTAIL</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="customModal">
+    <div class="modal-content">
+        <h2>DEMANDE ENVOYÉE !</h2>
+        <p>Votre réservation est bien prise en compte par mail.</p>
+        <p><strong>Confirmez maintenant sur WhatsApp avec Samuel ou Kalash :</strong></p>
+        <div class="modal-buttons">
+            <button id="choiceKalash" class="btn-wa" style="background:#007bff;">CONFIRMER AVEC KALASH</button>
+            <button id="choiceSamuel" class="btn-wa" style="background:#28a745;">CONFIRMER AVEC SAMUEL</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openCocktails() { document.getElementById('cocktail-overlay').style.display = 'block'; document.body.style.overflow = 'hidden'; }
+    function closeCocktails() { document.getElementById('cocktail-overlay').style.display = 'none'; document.body.style.overflow = 'auto'; }
+
+    let curS = 0; const slides = document.querySelectorAll('.c-slide');
+    setInterval(() => { slides[curS].style.opacity = 0; curS = (curS + 1) % slides.length; slides[curS].style.opacity = 1; }, 4000);
+
+    document.querySelectorAll('.flavor-item').forEach(item => {
+        item.onclick = () => {
+            const container = item.parentElement;
+            container.querySelectorAll('.flavor-item').forEach(i => i.classList.remove('selected', 'cocktail-selected'));
+            item.classList.add(item.closest('#cocktail-overlay') ? 'cocktail-selected' : 'selected');
+            item.querySelector('input').checked = true;
+        };
+    });
+
+    function handle(id, type) {
+        document.getElementById(id).onsubmit = function(e) {
+            e.preventDefault();
+            const n = document.getElementById(type=='chicha'?'nom':'cnom').value;
+            const h = document.getElementById(type=='chicha'?'heure':'cheure').value;
+            
+            let msg = "";
+            if (type === 'chicha') {
+                const i = document.querySelector('input[name="Saveur"]:checked').value;
+                msg = `Salut ! Nouvelle commande Chicha :\nNom: ${n}\nChoix: ${i}\nHeure: ${h}`;
+            } else {
+                const cocktail = document.querySelector('input[name="Cocktail"]:checked').value;
+                const qte = document.getElementById('c-qty').value;
+                const optAlcool = document.getElementsByName('Option_Alcool')[0].value;
+                const optMule = document.getElementsByName('Option_Mule')[0].value;
+                
+                let extra = "";
+                if (cocktail === "Exotic Summer") {
+                    extra = ""; 
+                } else if (cocktail === "Moscow Mule") {
+                    extra = `\nType: ${optMule}`; 
+                } else {
+                    extra = `\nOption: ${optAlcool}`; 
+                }
+                msg = `Salut ! Commande Cocktail :\nChoix: ${cocktail}\nQuantité: ${qte}${extra}\nNom: ${n}\nHeure: ${h}`;
+            }
+
+            fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
+            document.getElementById('customModal').style.display = "block";
+            
+            document.getElementById('choiceKalash').onclick = () => window.location.href = `https://wa.me/33685226577?text=${encodeURIComponent(msg)}`;
+            document.getElementById('choiceSamuel').onclick = () => window.location.href = `https://wa.me/33767165980?text=${encodeURIComponent(msg)}`;
+        };
+    }
+    handle('chichaForm', 'chicha'); 
+    handle('cocktailForm', 'cocktail');
+</script>
+</body>
+</html>
