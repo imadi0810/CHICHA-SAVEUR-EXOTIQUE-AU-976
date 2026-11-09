@@ -101,6 +101,8 @@
                     <label class="flavor-item">🍯 Moscow Mule<input type="radio" name="Cocktail" value="Moscow Mule"></label>
                     <label class="flavor-item">🍸 Gin Fizz<input type="radio" name="Cocktail" value="Gin Fizz"></label>
                     <label class="flavor-item">🌴 Exotic Summer<input type="radio" name="Cocktail" value="Exotic Summer"></label>
+                    <label class="flavor-item">🍑 Sex on the Beach<input type="radio" name="Cocktail" value="Sex on the Beach"></label>
+                    <label class="flavor-item">🥃 Ti Punch<input type="radio" name="Cocktail" value="Ti Punch"></label>
                 </div>
                 
                 <div id="box-alcool">
@@ -178,13 +180,16 @@
             if(radio.name === 'Cocktail') {
                 const boxAlcool = document.getElementById('box-alcool');
                 const boxMule = document.getElementById('box-mule');
+
                 if(radio.value === 'Moscow Mule') {
                     boxMule.style.display = 'block';
                     boxAlcool.style.display = 'none';
-                } else if(radio.value === 'Exotic Summer') {
+                } else if(radio.value === 'Ti Punch') {
+                    // Ti Punch : toujours avec alcool, on masque les deux sélecteurs
                     boxMule.style.display = 'none';
                     boxAlcool.style.display = 'none';
                 } else {
+                    // Mojito, Gin Fizz, Sex on the Beach, Exotic Summer : affichage de l'option Alcool / Virgin
                     boxMule.style.display = 'none';
                     boxAlcool.style.display = 'block';
                 }
@@ -214,11 +219,15 @@
                 const cocktail = document.querySelector('input[name="Cocktail"]:checked')?.value || 'Non précisé';
                 const qte = document.getElementById('c-qty').value;
                 let opt = "";
+                
                 if(cocktail === 'Moscow Mule') {
                     opt = `\nType : ${document.querySelector('select[name="Option_Mule"]').value}`;
-                } else if(cocktail !== 'Exotic Summer') {
+                } else if(cocktail === 'Ti Punch') {
+                    opt = `\nFormule : Traditionnel (Rhum)`;
+                } else {
                     opt = `\nOption : ${document.querySelector('select[name="Option_Alcool"]').value}`;
                 }
+                
                 msg = `Salut ! Nouvelle commande Cocktail (SUR PLACE) :\nClient : ${n}\nCocktail : ${cocktail} (x${qte})${opt}\nHeure : ${h}\nTable/Emplacement : ${table}`;
             }
 
