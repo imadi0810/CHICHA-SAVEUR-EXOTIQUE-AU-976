@@ -13,7 +13,7 @@
             --dark: #0f0f11;
             --grey: #1a1a1c;
             --white: #ffffff;
-            --link-blue: #3498db;
+            --green: #28a745;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +25,7 @@
             scroll-behavior: smooth; 
         }
 
-        /* 1. BANDEAU & ACCUEIL */
+        /* 1. BANDEAU HAUT & ACCUEIL */
         .top-navbar {
             position: absolute;
             top: 0;
@@ -174,7 +174,7 @@
         .btn-cyan { background: var(--blue); color: #000; }
         .btn-outline { background: rgba(0,0,0,0.5); border: 1.5px solid #fff; color: #fff; }
 
-        /* FORMULAIRE CHICHA */
+        /* 2. FORMULAIRE CHICHA */
         #reservation-section {
             padding: 40px 20px;
             max-width: 550px;
@@ -190,7 +190,9 @@
             font-weight: 800;
             font-size: 1.15rem;
         }
-        .chicha-total-box {
+
+        /* BANNIÈRE DE PRIX */
+        .total-banner-chicha {
             background: #181818;
             border: 2px solid var(--gold);
             border-radius: 10px;
@@ -263,6 +265,7 @@
             font-size: 1rem;
         }
 
+        /* 3. CARTE DE PAIEMENT & VRAI BOUTON */
         .payment-card {
             background: #fff;
             color: #000;
@@ -272,13 +275,24 @@
             margin: 25px 0;
         }
         .payment-card img { width: 190px; max-width: 100%; height: auto; }
-        .pay-link {
-            color: var(--link-blue);
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 1rem;
+        
+        .btn-pay-link {
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 14px;
+            padding: 14px 20px;
+            background: #111;
+            color: #fff;
+            border: 2px solid var(--gold);
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            transition: 0.2s;
+        }
+        .btn-pay-link:hover, .btn-pay-link:active {
+            background: var(--gold);
+            color: #000;
         }
 
         /* OVERLAYS PLEIN ÉCRAN */
@@ -324,7 +338,6 @@
             z-index: 10;
         }
 
-        /* GALERIE PHOTOS COCKTAILS */
         .cocktail-gallery {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -351,7 +364,6 @@
             color: var(--blue);
         }
 
-        /* CARTES COCKTAILS */
         .cocktail-category-title {
             color: var(--blue);
             text-align: left;
@@ -402,7 +414,7 @@
             min-width: 20px;
             text-align: center;
         }
-        .cocktail-total-box {
+        .total-banner-cocktail {
             background: #181818;
             border: 2px solid var(--blue);
             border-radius: 10px;
@@ -414,35 +426,74 @@
             color: var(--blue);
         }
 
-        /* MODALE POPUP */
+        /* 4. MODALE POPUP DOUBLE ACTION (PAIEMENT DIRECT + WHATSAPP) */
         #customModal {
             display: none;
             position: fixed;
             z-index: 10000;
             left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.92);
         }
         .modal-content {
-            background: white;
-            margin: 20vh auto;
-            padding: 30px;
+            background: #1c1c1f;
+            border: 2px solid var(--gold);
+            margin: 15vh auto;
+            padding: 30px 20px;
             border-radius: 20px;
             text-align: center;
-            color: black;
-            max-width: 420px;
+            color: white;
+            max-width: 440px;
             width: 90%;
             position: relative;
         }
+        .modal-close {
+            position: absolute;
+            top: 10px; right: 15px;
+            font-size: 26px;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .modal-title {
+            color: var(--gold);
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+        .modal-desc {
+            font-size: 0.95rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        /* GROS BOUTON PAIEMENT REVOLUT / APPLE PAY */
+        .btn-modal-pay {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            background: #fff;
+            color: #000;
+            font-weight: 900;
+            font-size: 1.1rem;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.2);
+            transition: transform 0.15s;
+        }
+        .btn-modal-pay:active {
+            transform: scale(0.98);
+        }
+
         .btn-wa {
             width: 100%;
-            padding: 15px;
-            margin-top: 12px;
+            padding: 14px;
+            margin-top: 10px;
             border-radius: 10px;
             border: none;
             font-weight: bold;
             color: white;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
     </style>
 </head>
@@ -500,7 +551,7 @@
     <form id="chichaForm" action="https://formspree.io/f/mkogdjrr" method="POST">
         <input type="hidden" name="Type_Demande" value="Commande Chicha">
         <input type="hidden" name="Saveurs_Choisies" id="chicha-saveurs-hidden">
-        <input type="hidden" name="Prix_Total_Chicha" id="chicha-prix-hidden" value="0€">
+        <input type="hidden" name="Prix_Total_Global" id="chicha-prix-hidden" value="0€">
 
         <label>CHOISISSEZ VOS SAVEURS (15€ / SAVEUR - JUSQU'À 4) :</label>
         <div class="flavor-selection">
@@ -536,9 +587,9 @@
             </div>
         </div>
 
-        <!-- TOTAL AUTOMATIQUE PAR SAVEUR -->
-        <div class="chicha-total-box">
-            PRIX SESSION CHICHA : <span id="chicha-price-val">0</span> €
+        <!-- TOTAL GLOBAL AFFICHÉ CÔTÉ CHICHA -->
+        <div class="total-banner-chicha">
+            TOTAL COMMANDE EN DIRECT : <span class="display-grand-total">0</span> €
         </div>
 
         <label>Nom :</label> <input type="text" id="nom" name="Nom" required>
@@ -548,12 +599,17 @@
         <label>Numéro de table / Emplacement :</label> <textarea id="comm" name="Commentaire" rows="2" placeholder="Précisez votre table ou salon..."></textarea>
 
         <div class="payment-card">
-            <p><strong>REVOLUT : 15€ (CHICHA) | 8€ (VIRGIN) | 10€ (COCKTAIL)</strong></p>
+            <p><strong>RÈGLEMENT SÉCURISÉ (REVOLUT / APPLE PAY)</strong></p>
             <img src="qr-revolut.jpg" alt="QR Code Paiement">
-            <br><a href="https://revolut.me/idarou78m/pocket/DVCGkcfxK4" target="_blank" class="pay-link">CLIQUER ICI POUR PAYER EN LIGNE</a>
+            <br>
+            <a href="https://revolut.me/idarou78m/pocket/DVCGkcfxK4" target="_blank" class="btn-pay-link">
+                💳 PAYER EN LIGNE (<span class="display-grand-total">0</span> €)
+            </a>
         </div>
 
-        <button type="submit" style="width:100%; padding:18px; background:var(--gold); border:none; font-weight:800; border-radius:8px; cursor:pointer; font-size:1.05rem; color:#000;">CONFIRMER MA CHICHA</button>
+        <button type="submit" style="width:100%; padding:18px; background:var(--gold); border:none; font-weight:800; border-radius:8px; cursor:pointer; font-size:1.05rem; color:#000;">
+            ENVOYER ET CONFIRMER MA COMMANDE
+        </button>
     </form>
 </main>
 
@@ -589,6 +645,7 @@
             <form id="cocktailForm" action="https://formspree.io/f/mkogdjrr" method="POST">
                 <input type="hidden" name="Type_Demande" value="Commande Cocktail">
                 <input type="hidden" name="Recapitulatif_Commande" id="recap-hidden">
+                <input type="hidden" name="Prix_Total_Global" id="cocktail-prix-hidden" value="0€">
 
                 <!-- 1. MOJITO -->
                 <div class="cocktail-category-title">🍸 MOJITO</div>
@@ -696,8 +753,9 @@
                     </div>
                 </div>
 
-                <div class="cocktail-total-box">
-                    TOTAL COCKTAILS : <span id="total-price">0</span> €
+                <!-- TOTAL GLOBAL AFFICHÉ CÔTÉ COCKTAIL -->
+                <div class="total-banner-cocktail">
+                    TOTAL COMMANDE EN DIRECT : <span class="display-grand-total">0</span> €
                 </div>
 
                 <input type="text" id="cnom" name="Nom_Client" placeholder="NOM & PRÉNOM" required>
@@ -706,12 +764,17 @@
                 <input type="text" id="ctable" name="Table_Client" placeholder="NUMÉRO DE TABLE OU SALON" required>
 
                 <div class="payment-card">
-                    <p><strong>RÈGLEMENT (8€ Virgin / 10€ Cocktail)</strong></p>
+                    <p><strong>RÈGLEMENT SÉCURISÉ (REVOLUT / APPLE PAY)</strong></p>
                     <img src="qr-revolut.jpg" alt="QR Code Paiement">
-                    <br><a href="https://revolut.me/idarou78m/pocket/DVCGkcfxK4" target="_blank" class="pay-link">CLIQUER ICI POUR PAYER EN LIGNE</a>
+                    <br>
+                    <a href="https://revolut.me/idarou78m/pocket/DVCGkcfxK4" target="_blank" class="btn-pay-link">
+                        💳 PAYER EN LIGNE (<span class="display-grand-total">0</span> €)
+                    </a>
                 </div>
 
-                <button type="submit" style="width:100%; padding:18px; background:var(--blue); border:none; font-weight:800; border-radius:8px; color:#000; font-size:1.05rem; cursor:pointer;">COMMANDER CES COCKTAILS</button>
+                <button type="submit" style="width:100%; padding:18px; background:var(--blue); border:none; font-weight:800; border-radius:8px; color:#000; font-size:1.05rem; cursor:pointer;">
+                    ENVOYER ET CONFIRMER MA COMMANDE
+                </button>
             </form>
         </div>
     </div>
@@ -768,13 +831,19 @@
     </div>
 </div>
 
-<!-- MODALE POPUP WHATSAPP -->
+<!-- 5. MODALE POPUP DOUBLE ACTION (PAIEMENT DIRECT + WHATSAPP) -->
 <div id="customModal" onclick="closeModal(event)">
     <div class="modal-content">
-        <span onclick="document.getElementById('customModal').style.display='none'" style="position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer;">&times;</span>
-        <h2>DEMANDE ENREGISTRÉE !</h2>
-        <p>Votre demande a bien été transmise par e-mail.</p>
-        <p><strong>Confirmez-la directement sur WhatsApp :</strong></p>
+        <span class="modal-close" onclick="document.getElementById('customModal').style.display='none'">&times;</span>
+        <h2 class="modal-title">COMMANDE ENREGISTRÉE !</h2>
+        <p class="modal-desc">Votre commande a bien été reçue par notre équipe.</p>
+        
+        <!-- GROS BOUTON DE RÈGLEMENT IMMÉDIAT DANS LA FENÊTRE -->
+        <a id="modal-pay-btn" href="https://revolut.me/idarou78m/pocket/DVCGkcfxK4" target="_blank" class="btn-modal-pay">
+            💳 PAYER MAINTENANT (<span id="modal-pay-amount">0</span> €)
+        </a>
+
+        <p style="font-size:0.85rem; color:#aaa; margin-bottom:12px;">OU CONFIRMER AVEC LE STAFF :</p>
         <div>
             <button id="choiceKalash" class="btn-wa" style="background:#007bff;">CONFIRMER AVEC KALASH</button>
             <button id="choiceSam" class="btn-wa" style="background:#28a745;">CONFIRMER AVEC SAM</button>
@@ -782,6 +851,9 @@
     </div>
 </div>
 
+<!-- ===================================================================
+     JAVASCRIPT : CALCUL GLOBAL & ACTIONS
+=================================================================== -->
 <script>
     function openCocktails() { 
         document.getElementById('cocktail-overlay').style.display = 'block'; 
@@ -816,16 +888,41 @@
         }
     }, 4000);
 
-    // GESTION DES SAVEURS CHICHA : 15€ MULTIPLIÉ PAR LE NOMBRE DE SAVEURS
-    const PRIX_PAR_SAVEUR = 15;
+    // =========================================================
+    // CALCUL DU PANIER GLOBAL (CHICHA + COCKTAILS ENSEMBLE)
+    // =========================================================
+    const PRIX_PAR_SAVEUR_CHICHA = 15;
 
-    function recalculerChicha() {
-        const count = document.querySelectorAll('#reservation-section .flavor-item.selected').length;
-        const totalChicha = count * PRIX_PAR_SAVEUR;
-        document.getElementById('chicha-price-val').textContent = totalChicha;
-        document.getElementById('chicha-prix-hidden').value = totalChicha + "€";
+    function recalculerPanierGlobal() {
+        // 1. Calcul Chicha (15€ par saveur)
+        const nbSaveurs = document.querySelectorAll('#reservation-section .flavor-item.selected').length;
+        const totalChicha = nbSaveurs * PRIX_PAR_SAVEUR_CHICHA;
+
+        // 2. Calcul Cocktails
+        let totalCocktails = 0;
+        document.querySelectorAll('.cocktail-card').forEach(card => {
+            const qty = parseInt(card.querySelector('.qty-val').textContent);
+            const price = parseInt(card.getAttribute('data-price')) || 10;
+            totalCocktails += qty * price;
+        });
+
+        // 3. Total Global Combiné
+        const grandTotal = totalChicha + totalCocktails;
+
+        // Mise à jour de tous les affichages sur le site
+        document.querySelectorAll('.display-grand-total').forEach(el => {
+            el.textContent = grandTotal;
+        });
+
+        // Mise à jour des champs cachés
+        document.getElementById('chicha-prix-hidden').value = grandTotal + "€";
+        document.getElementById('cocktail-prix-hidden').value = grandTotal + "€";
+        document.getElementById('modal-pay-amount').textContent = grandTotal;
+
+        return { totalChicha, totalCocktails, grandTotal };
     }
 
+    // Gestion du clic sur les saveurs chicha
     document.querySelectorAll('#reservation-section .flavor-item').forEach(item => {
         item.onclick = () => {
             const checkbox = item.querySelector('input[type="checkbox"]');
@@ -842,31 +939,23 @@
                 item.classList.add('selected');
                 checkbox.checked = true;
             }
-            recalculerChicha();
+            recalculerPanierGlobal();
         };
     });
 
-    // COMPTEURS COCKTAIL (+ / -)
+    // Gestion des compteurs cocktails (+ / -)
     function changeQty(btn, delta) {
         const card = btn.closest('.cocktail-card');
         const qtySpan = card.querySelector('.qty-val');
         let currentQty = Math.max(0, parseInt(qtySpan.textContent) + delta);
         qtySpan.textContent = currentQty;
         card.classList.toggle('active', currentQty > 0);
-        updateCocktailTotal();
+        recalculerPanierGlobal();
     }
 
-    function updateCocktailTotal() {
-        let total = 0;
-        document.querySelectorAll('.cocktail-card').forEach(card => {
-            const qty = parseInt(card.querySelector('.qty-val').textContent);
-            const price = parseInt(card.getAttribute('data-price')) || 10;
-            total += qty * price;
-        });
-        document.getElementById('total-price').textContent = total;
-    }
-
-    // TRAITEMENT SOUMISSION & WHATSAPP
+    // =========================================================
+    // ENVOI FORMSPREE PUIS AFFICHAGE DU PAIEMENT & WHATSAPP
+    // =========================================================
     function handleSubmission(id, type) {
         const form = document.getElementById(id);
         if(!form) return;
@@ -874,13 +963,13 @@
         form.onsubmit = function(e) {
             e.preventDefault();
             let msg = "";
+            const { grandTotal } = recalculerPanierGlobal();
 
             if (type === 'chicha') {
                 const n = document.getElementById('nom').value;
                 const p = document.getElementById('prenom').value;
                 const h = document.getElementById('heure').value;
                 const table = document.getElementById('comm').value || 'Sur place';
-                const totalChicha = document.getElementById('chicha-price-val').textContent;
 
                 let selectedFlavors = [];
                 document.querySelectorAll('#reservation-section .flavor-item.selected').forEach(el => {
@@ -894,13 +983,12 @@
 
                 const flavorsText = selectedFlavors.join(' + ');
                 document.getElementById('chicha-saveurs-hidden').value = flavorsText;
-                msg = `Salut ! Nouvelle commande Chicha (SUR PLACE) :\nClient : ${n} ${p}\nSaveurs [${selectedFlavors.length}/4] : ${flavorsText}\nHeure : ${h}\nTable/Emplacement : ${table}\nTOTAL : ${totalChicha}€`;
+                msg = `Salut ! Nouvelle commande Chicha (SUR PLACE) :\nClient : ${n} ${p}\nSaveurs [${selectedFlavors.length}/4] : ${flavorsText}\nHeure : ${h}\nTable/Emplacement : ${table}\nTOTAL À RÉGLER : ${grandTotal}€`;
             
             } else if (type === 'cocktail') {
                 const n = document.getElementById('cnom').value;
                 const h = document.getElementById('cheure').value;
                 const table = document.getElementById('ctable').value;
-                const total = document.getElementById('total-price').textContent;
                 
                 let items = [];
                 document.querySelectorAll('.cocktail-card').forEach(card => {
@@ -918,7 +1006,7 @@
 
                 const recapTexte = items.join('\n');
                 document.getElementById('recap-hidden').value = recapTexte;
-                msg = `Salut ! Nouvelle commande Cocktail (SUR PLACE) :\nClient : ${n}\nTable : ${table}\nHeure : ${h}\n\nCommande :\n${recapTexte}\n\nTOTAL : ${total}€`;
+                msg = `Salut ! Nouvelle commande Cocktail (SUR PLACE) :\nClient : ${n}\nTable : ${table}\nHeure : ${h}\n\nCommande :\n${recapTexte}\n\nTOTAL À RÉGLER : ${grandTotal}€`;
             
             } else if (type === 'table') {
                 const n = document.getElementById('tab-nom').value;
@@ -932,8 +1020,10 @@
                 msg = `Salut ! Demande de Réservation de Table :\nClient : ${n} ${p}\nTél : ${tel}\nDate : ${d} à ${h}\nGroupe : ${pers}\nMessage : ${m}`;
             }
 
+            // 1. Envoi immédiat en arrière-plan par Formspree (votre e-mail reçoit la commande)
             fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
 
+            // 2. Affichage de la fenêtre avec Paiement Direct + WhatsApp
             document.getElementById('customModal').style.display = "block";
             document.getElementById('choiceKalash').onclick = () => window.location.href = `https://wa.me/33769288353?text=${encodeURIComponent(msg)}`;
             document.getElementById('choiceSam').onclick = () => window.location.href = `https://wa.me/33767165980?text=${encodeURIComponent(msg)}`;
