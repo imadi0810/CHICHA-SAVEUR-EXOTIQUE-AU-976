@@ -25,9 +25,7 @@
             scroll-behavior: smooth; 
         }
 
-        /* ========================================================
-           1. BANDEAU HAUT & ACCUEIL (STYLE APPLICATION MOBILE)
-        ======================================================== */
+        /* 1. ACCUEIL ET BANDEAU */
         .top-navbar {
             position: absolute;
             top: 0;
@@ -115,7 +113,7 @@
             margin-bottom: 25px;
         }
 
-        /* GRILLE DES 4 PETITS BOUTONS DORÉS */
+        /* 4 PETITS BOUTONS */
         .quick-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -153,7 +151,7 @@
             text-transform: uppercase;
         }
 
-        /* GRANDS BOUTONS D'ACTION */
+        /* GRANDS BOUTONS */
         .action-btns {
             display: flex;
             flex-direction: column;
@@ -178,9 +176,7 @@
         .btn-cyan { background: var(--blue); color: #000; }
         .btn-outline { background: rgba(0,0,0,0.5); border: 1.5px solid #fff; color: #fff; }
 
-        /* ========================================================
-           2. SECTION FORMULAIRE CHICHA
-        ======================================================== */
+        /* FORMULAIRE CHICHA */
         #reservation-section {
             padding: 40px 20px;
             max-width: 550px;
@@ -196,8 +192,6 @@
             font-weight: 800;
             font-size: 1.15rem;
         }
-
-        /* TOTAL COMPTEUR EN DIRECT CHICHA */
         .chicha-total-box {
             background: #181818;
             border: 2px solid var(--gold);
@@ -260,7 +254,7 @@
             text-transform: uppercase;
             font-size: 0.9rem;
         }
-        input, textarea {
+        input, select, textarea {
             width: 100%;
             padding: 14px;
             background: #252525;
@@ -289,44 +283,59 @@
             margin-top: 10px;
         }
 
-        /* ========================================================
-           3. OVERLAY MENU COCKTAILS
-        ======================================================== */
-        #cocktail-overlay {
+        /* OVERLAYS PLEIN ÉCRAN (COCKTAILS & TABLE) */
+        .fullscreen-overlay {
             display: none;
             position: fixed;
             z-index: 2000;
             left: 0; top: 0; width: 100%; height: 100%;
             overflow-y: auto;
+            background: rgba(15, 15, 17, 0.96);
         }
-        #cocktail-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: black;
-        }
-        .c-slide {
-            position: absolute;
-            width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
-            transition: opacity 1.5s ease-in-out;
-            opacity: 0;
-        }
-        .overlay-dark {
-            background: rgba(0,0,0,0.88);
-            min-height: 100%;
+        .overlay-inner {
+            max-width: 550px;
+            margin: 0 auto;
             padding: 40px 20px;
             position: relative;
+            text-align: center;
         }
         .close-btn {
             position: absolute;
             top: 15px; right: 20px;
             font-size: 2.5rem;
-            color: var(--blue);
+            color: var(--gold);
             cursor: pointer;
             z-index: 10;
         }
+
+        /* GALERIE PHOTOS COCKTAILS */
+        .cocktail-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 20px 0 35px 0;
+        }
+        .gallery-card {
+            background: #181818;
+            border: 1px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .gallery-card img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            display: block;
+        }
+        .gallery-card span {
+            display: block;
+            padding: 8px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--blue);
+        }
+
+        /* COMPOSANTS CARTES COCKTAILS */
         .cocktail-category-title {
             color: var(--blue);
             text-align: left;
@@ -389,9 +398,7 @@
             color: var(--blue);
         }
 
-        /* ========================================================
-           4. MODAL CONFIRMATION WHATSAPP
-        ======================================================== */
+        /* MODALE POPUP */
         #customModal {
             display: none;
             position: fixed;
@@ -426,37 +433,33 @@
 <body>
 
 <!-- ===================================================================
-     SECTION ACCUEIL : EN-TÊTE + BOUTONS D'ACCÈS RAPIDE + ACTIONS
+     1. ACCUEIL PRINCIPAL
 =================================================================== -->
 <section id="welcome-screen">
-    
-    <!-- BANDEAU SUPÉRIEUR -->
     <div class="top-navbar">
         <a href="#reservation-section" class="nav-icon" title="Menu">☰</a>
         <div class="header-logo-wrap">
-            <!-- VOTRE LOGO CHICHA ICI -->
             <img src="chicha-logo.png" alt="Logo" class="header-logo-img">
         </div>
-        <a href="#reservation-section" class="nav-icon" title="Réserver">📅</a>
+        <div class="nav-icon" onclick="openTableModal()" title="Réserver Table">📅</div>
     </div>
 
     <div class="welcome-content">
-        <!-- MODIFIER LE TITRE DU SITE ICI -->
         <h1 class="main-title">SAVEURS EXOTIQUE</h1>
         <p class="subtitle">Consommation sur place uniquement 🍹</p>
         <p class="hours-badge">Service continu de 15h00 à 00h30</p>
 
-        <!-- LES 4 BOUTONS DORÉS DE L'INTERFACE -->
+        <!-- 4 BOUTONS DORÉS -->
         <div class="quick-grid">
             <div class="quick-btn" onclick="openCocktails()">
                 <span class="quick-btn-icon">🍸</span>
                 <span class="quick-btn-txt">Voir nos<br>Cocktails</span>
             </div>
-            <a href="#reservation-section" class="quick-btn">
+            <div class="quick-btn" onclick="openTableModal()">
                 <span class="quick-btn-icon">📅</span>
                 <span class="quick-btn-txt">Réservation<br>Table</span>
-            </a>
-            <div class="quick-btn" onclick="alert('Nos menus complets arrivent très bientôt !')">
+            </div>
+            <div class="quick-btn" onclick="alert('Nos menus arrivent très bientôt !')">
                 <span class="quick-btn-icon">🍽️</span>
                 <span class="quick-btn-txt">Nos<br>Menus</span>
             </div>
@@ -466,7 +469,6 @@
             </div>
         </div>
 
-        <!-- LES 3 GRANDS BOUTONS -->
         <div class="action-btns">
             <a href="#reservation-section" class="main-btn btn-gold">RÉSERVER CHICHA</a>
             <button onclick="openCocktails()" class="main-btn btn-cyan">NOTRE CARTE COCKTAILS</button>
@@ -476,7 +478,7 @@
 </section>
 
 <!-- ===================================================================
-     SECTION FORMULAIRE DE COMMANDE CHICHA (SUR PLACE)
+     2. FORMULAIRE DE CHICHA (SUR PLACE)
 =================================================================== -->
 <main id="reservation-section">
     <div class="promo-card">
@@ -485,12 +487,12 @@
     </div>
 
     <form id="chichaForm" action="https://formspree.io/f/mkogdjrr" method="POST">
+        <input type="hidden" name="Type_Demande" value="Commande Chicha">
         <input type="hidden" name="Saveurs_Choisies" id="chicha-saveurs-hidden">
         <input type="hidden" name="Prix_Total_Chicha" id="chicha-prix-hidden" value="0€">
 
         <label>CHOISISSEZ VOS SAVEURS (1 À 4 MAXIMUM) :</label>
         <div class="flavor-selection">
-            <!-- MODIFIER OU AJOUTER DES SAVEURS CI-DESSOUS -->
             <div class="flavor-item" data-flavor="Hawai">
                 <span class="dot"></span>
                 <span>🍍 HAWAI</span>
@@ -523,25 +525,15 @@
             </div>
         </div>
 
-        <!-- LIGNE DU COMPTEUR AUTOMATIQUE DE PRIX CHICHA -->
         <div class="chicha-total-box">
             PRIX SESSION CHICHA : <span id="chicha-price-val">0</span> €
         </div>
 
-        <label>Nom :</label>
-        <input type="text" id="nom" name="Nom" required>
-
-        <label>Prénom :</label>
-        <input type="text" id="prenom" name="Prenom" required>
-
-        <label>Téléphone :</label>
-        <input type="tel" id="tel" name="Telephone" placeholder="06..." required>
-
-        <label>Heure souhaitée (15:00 - 00h30) :</label>
-        <input type="time" id="heure" name="Heure" required>
-
-        <label>Numéro de table / Emplacement sur place :</label>
-        <textarea id="comm" name="Commentaire" rows="2" placeholder="Précisez votre table ou salon..."></textarea>
+        <label>Nom :</label> <input type="text" id="nom" name="Nom" required>
+        <label>Prénom :</label> <input type="text" id="prenom" name="Prenom" required>
+        <label>Téléphone :</label> <input type="tel" id="tel" name="Telephone" placeholder="06..." required>
+        <label>Heure souhaitée (15:00 - 00h30) :</label> <input type="time" id="heure" name="Heure" required>
+        <label>Numéro de table / Emplacement :</label> <textarea id="comm" name="Commentaire" rows="2" placeholder="Précisez votre table ou salon..."></textarea>
 
         <div class="payment-card">
             <p><strong>REVOLUT : 15€ (CHICHA) | 8€ (VIRGIN) | 10€ (COCKTAIL)</strong></p>
@@ -554,26 +546,30 @@
 </main>
 
 <!-- ===================================================================
-     SECTION OVERLAY : CARTE DES COCKTAILS (MULTI-CHOIX & COMPTEUR)
+     3. ONGLET : VOIR NOS COCKTAILS (PHOTOS + COMMANDE EN BAS)
 =================================================================== -->
-<div id="cocktail-overlay">
-    <div id="cocktail-bg">
-        <!-- VOS IMAGES DE COCKTAILS DU DIAPORAMA -->
-        <div class="c-slide" style="background-image: url('saveur.jpg'); opacity: 1;"></div>
-        <div class="c-slide" style="background-image: url('saveur1.jpg');"></div>
-        <div class="c-slide" style="background-image: url('saveur2.jpg');"></div>
-        <div class="c-slide" style="background-image: url('saveur3.jpg');"></div>
-        <div class="c-slide" style="background-image: url('saveur4.jpg');"></div>
-        <div class="c-slide" style="background-image: url('saveur5.jpg');"></div>
-    </div>
-
-    <div class="overlay-dark">
+<div id="cocktail-overlay" class="fullscreen-overlay">
+    <div class="overlay-inner">
         <span class="close-btn" onclick="closeCocktails()">×</span>
-        <div style="max-width: 500px; margin: 0 auto; text-align: center;">
-            <h2 style="color: var(--blue); font-size: 1.6rem; margin-bottom: 8px;">CARTE DES COCKTAILS</h2>
-            <p style="margin-bottom: 25px; font-size: 1rem; color: #ddd;">Ajoutez vos verres avec les boutons + et -</p>
+        
+        <h2 style="color: var(--blue); font-size: 1.6rem; margin-bottom: 6px;">NOS CRÉATIONS COCKTAILS</h2>
+        <p style="color: #bbb; font-size: 0.95rem; margin-bottom: 20px;">Découvrez nos recettes puis commandez en bas</p>
 
+        <!-- VOS PHOTOS DE COCKTAILS -->
+        <div class="cocktail-gallery">
+            <div class="gallery-card"><img src="saveur.jpg" alt="Cocktail 1"><span>Mojito Exotique</span></div>
+            <div class="gallery-card"><img src="saveur1.jpg" alt="Cocktail 2"><span>Moscow Mule</span></div>
+            <div class="gallery-card"><img src="saveur2.jpg" alt="Cocktail 3"><span>Gin Fizz</span></div>
+            <div class="gallery-card"><img src="saveur3.jpg" alt="Cocktail 4"><span>Sex on the Beach</span></div>
+            <div class="gallery-card"><img src="saveur4.jpg" alt="Cocktail 5"><span>Exotic Summer</span></div>
+            <div class="gallery-card"><img src="saveur5.jpg" alt="Cocktail 6"><span>Ti Punch des Îles</span></div>
+        </div>
+
+        <div style="border-top: 2px dashed #444; padding-top: 25px; margin-top: 25px;">
+            <h3 style="color: var(--blue); margin-bottom: 15px;">PASSER COMMANDE À VOTRE TABLE</h3>
+            
             <form id="cocktailForm" action="https://formspree.io/f/mkogdjrr" method="POST">
+                <input type="hidden" name="Type_Demande" value="Commande Cocktail">
                 <input type="hidden" name="Recapitulatif_Commande" id="recap-hidden">
 
                 <!-- 1. MOJITO -->
@@ -687,7 +683,7 @@
                 </div>
 
                 <input type="text" id="cnom" name="Nom_Client" placeholder="NOM & PRÉNOM" required>
-                <label style="color:var(--blue)">Heure souhaitée (15:00 - 00h30) :</label>
+                <label style="color:var(--blue)">Heure souhaitée (15:00 - 00h30) :</label> 
                 <input type="time" id="cheure" name="Heure" required>
                 <input type="text" id="ctable" name="Table_Client" placeholder="NUMÉRO DE TABLE OU SALON" required>
 
@@ -704,16 +700,77 @@
 </div>
 
 <!-- ===================================================================
-     MODAL DE CONFIRMATION WHATSAPP
+     4. ONGLET DÉDIÉ : RÉSERVATION TABLE (FORMULAIRE COMPLET)
+=================================================================== -->
+<div id="table-overlay" class="fullscreen-overlay">
+    <div class="overlay-inner">
+        <span class="close-btn" onclick="closeTableModal()">×</span>
+        
+        <h2 style="color: var(--gold); font-size: 1.6rem; margin-bottom: 12px; text-transform: uppercase;">RÉSERVATION DE TABLE</h2>
+        
+        <!-- TEXTE EXACT DEMANDÉ -->
+        <p style="background: rgba(212, 175, 55, 0.12); border: 1px solid var(--gold); border-radius: 10px; padding: 15px; margin-bottom: 25px; font-size: 0.95rem; line-height: 1.5; color: #fff;">
+            Laissez-nous vos coordonnées et le moment souhaité. L'équipe vous recontacte pour confirmer. Ouvert 7j/7 de 15h à 00h.
+        </p>
+
+        <form id="tableForm" action="https://formspree.io/f/mkogdjrr" method="POST">
+            <input type="hidden" name="Type_Demande" value="Réservation Table">
+            
+            <label>Nom :</label>
+            <input type="text" id="tab-nom" name="Nom" required>
+
+            <label>Prénom :</label>
+            <input type="text" id="tab-prenom" name="Prenom" required>
+
+            <label>Téléphone :</label>
+            <input type="tel" id="tab-tel" name="Telephone" placeholder="06..." required>
+
+            <label>Adresse E-mail :</label>
+            <input type="email" id="tab-email" name="Email" placeholder="votre@email.com" required>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div>
+                    <label>Date :</label>
+                    <input type="date" id="tab-date" name="Date_Reservation" required>
+                </div>
+                <div>
+                    <label>Heure :</label>
+                    <input type="time" id="tab-heure" name="Heure_Arrivee" required>
+                </div>
+            </div>
+
+            <!-- CHOIX DE 2 À 10 PERSONNES -->
+            <label>Nombre de personnes :</label>
+            <select id="tab-pers" name="Nombre_Personnes" required>
+                <option value="2 personnes">2 personnes</option>
+                <option value="3 personnes">3 personnes</option>
+                <option value="4 personnes">4 personnes</option>
+                <option value="5 personnes">5 personnes</option>
+                <option value="6 personnes">6 personnes</option>
+                <option value="7 personnes">7 personnes</option>
+                <option value="8 personnes">8 personnes</option>
+                <option value="9 personnes">9 personnes</option>
+                <option value="10 personnes">10 personnes</option>
+            </select>
+
+            <label>Message / Précisions :</label>
+            <textarea id="tab-msg" name="Message" rows="3" placeholder="Anniversaire, salon préféré, événement..."></textarea>
+
+            <button type="submit" style="width:100%; padding:18px; background:var(--gold); border:none; font-weight:800; border-radius:8px; cursor:pointer; font-size:1.05rem; color:#000;">ENVOYER LA DEMANDE DE RÉSERVATION</button>
+        </form>
+    </div>
+</div>
+
+<!-- ===================================================================
+     MODALE POPUP WHATSAPP
 =================================================================== -->
 <div id="customModal" onclick="closeModal(event)">
     <div class="modal-content">
         <span onclick="document.getElementById('customModal').style.display='none'" style="position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer;">&times;</span>
-        <h2>COMMANDE SUR PLACE ENREGISTRÉE !</h2>
-        <p>Votre demande a bien été transmise.</p>
+        <h2 id="modal-title">DEMANDE ENREGISTRÉE !</h2>
+        <p id="modal-desc">Votre demande a bien été envoyée par e-mail.</p>
         <p><strong>Confirmez-la directement sur WhatsApp :</strong></p>
         <div>
-            <!-- NUMÉROS DE TÉLÉPHONE KALASH ET SAM CI-DESSOUS -->
             <button id="choiceKalash" class="btn-wa" style="background:#007bff;">CONFIRMER AVEC KALASH</button>
             <button id="choiceSam" class="btn-wa" style="background:#28a745;">CONFIRMER AVEC SAM</button>
         </div>
@@ -721,7 +778,7 @@
 </div>
 
 <!-- ===================================================================
-     JAVASCRIPT : ACTIONS & CALCULS
+     JAVASCRIPT
 =================================================================== -->
 <script>
     function openCocktails() { 
@@ -732,25 +789,22 @@
         document.getElementById('cocktail-overlay').style.display = 'none'; 
         document.body.style.overflow = 'auto'; 
     }
+
+    function openTableModal() {
+        document.getElementById('table-overlay').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeTableModal() {
+        document.getElementById('table-overlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
     function closeModal(e) { 
         if(e.target.id === 'customModal') e.target.style.display = 'none'; 
     }
 
-    // Diaporama d'images en arrière-plan
-    let curS = 0; 
-    const slides = document.querySelectorAll('.c-slide');
-    setInterval(() => { 
-        if(slides.length > 0) {
-            slides[curS].style.opacity = 0; 
-            curS = (curS + 1) % slides.length; 
-            slides[curS].style.opacity = 1; 
-        }
-    }, 4000);
-
-    // GESTION DES SAVEURS CHICHA & PRIX AUTOMATIQUE
-    // PRIX D'UNE SESSION CHICHA (MODIFIER ICI SI BESOIN) :
+    // PRIX AUTOMATIQUE CHICHA (15€)
     const PRIX_SESSION_CHICHA = 15;
-
     document.querySelectorAll('#reservation-section .flavor-item').forEach(item => {
         item.onclick = () => {
             const checkbox = item.querySelector('input[type="checkbox"]');
@@ -767,19 +821,14 @@
                 item.classList.add('selected');
                 checkbox.checked = true;
             }
-            updateChichaPrice();
+            const count = document.querySelectorAll('#reservation-section .flavor-item.selected').length;
+            const totalChicha = count > 0 ? PRIX_SESSION_CHICHA : 0;
+            document.getElementById('chicha-price-val').textContent = totalChicha;
+            document.getElementById('chicha-prix-hidden').value = totalChicha + "€";
         };
     });
 
-    function updateChichaPrice() {
-        const count = document.querySelectorAll('#reservation-section .flavor-item.selected').length;
-        // Si au moins 1 saveur est choisie, le prix est de 15€
-        const totalChicha = count > 0 ? PRIX_SESSION_CHICHA : 0;
-        document.getElementById('chicha-price-val').textContent = totalChicha;
-        document.getElementById('chicha-prix-hidden').value = totalChicha + "€";
-    }
-
-    // GESTION COMPTEURS COCKTAILS (+ / -)
+    // COMPTEURS COCKTAIL (+ / -)
     function changeQty(btn, delta) {
         const card = btn.closest('.cocktail-card');
         const qtySpan = card.querySelector('.qty-val');
@@ -799,7 +848,7 @@
         document.getElementById('total-price').textContent = total;
     }
 
-    // GESTION SOUMISSION ET ENVOI WHATSAPP
+    // GESTION DES 3 FORMULAIRES (CHICHA, COCKTAILS, TABLE)
     function handleSubmission(id, type) {
         const form = document.getElementById(id);
         if(!form) return;
@@ -827,9 +876,9 @@
 
                 const flavorsText = selectedFlavors.join(' + ');
                 document.getElementById('chicha-saveurs-hidden').value = flavorsText;
-
-                msg = `Salut ! Nouvelle commande Chicha (SUR PLACE) :\nClient : ${n} ${p}\nSaveurs [${selectedFlavors.length}/4] : ${flavorsText}\nHeure : ${h}\nTable/Emplacement : ${table}\n\nPRIX TOTAL : ${totalChicha}€`;
-            } else {
+                msg = `Salut ! Nouvelle commande Chicha (SUR PLACE) :\nClient : ${n} ${p}\nSaveurs [${selectedFlavors.length}/4] : ${flavorsText}\nHeure : ${h}\nTable/Emplacement : ${table}\nTOTAL : ${totalChicha}€`;
+            
+            } else if (type === 'cocktail') {
                 const n = document.getElementById('cnom').value;
                 const h = document.getElementById('cheure').value;
                 const table = document.getElementById('ctable').value;
@@ -851,14 +900,24 @@
 
                 const recapTexte = items.join('\n');
                 document.getElementById('recap-hidden').value = recapTexte;
-
                 msg = `Salut ! Nouvelle commande Cocktail (SUR PLACE) :\nClient : ${n}\nTable : ${table}\nHeure : ${h}\n\nCommande :\n${recapTexte}\n\nTOTAL : ${total}€`;
+            
+            } else if (type === 'table') {
+                const n = document.getElementById('tab-nom').value;
+                const p = document.getElementById('tab-prenom').value;
+                const tel = document.getElementById('tab-tel').value;
+                const d = document.getElementById('tab-date').value;
+                const h = document.getElementById('tab-heure').value;
+                const pers = document.getElementById('tab-pers').value;
+                const m = document.getElementById('tab-msg').value || 'Aucun';
+
+                msg = `Salut ! Demande de Réservation de Table :\nClient : ${n} ${p}\nTél : ${tel}\nDate : ${d} à ${h}\nGroupe : ${pers}\nMessage : ${m}`;
             }
 
-            // Envoi Formspree par e-mail
+            // Envoi Formspree vers votre email
             fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
 
-            // Affichage modale WhatsApp
+            // Popup WhatsApp
             document.getElementById('customModal').style.display = "block";
             document.getElementById('choiceKalash').onclick = () => window.location.href = `https://wa.me/33769288353?text=${encodeURIComponent(msg)}`;
             document.getElementById('choiceSam').onclick = () => window.location.href = `https://wa.me/33767165980?text=${encodeURIComponent(msg)}`;
@@ -867,6 +926,7 @@
 
     handleSubmission('chichaForm', 'chicha'); 
     handleSubmission('cocktailForm', 'cocktail');
+    handleSubmission('tableForm', 'table');
 </script>
 </body>
 </html>
