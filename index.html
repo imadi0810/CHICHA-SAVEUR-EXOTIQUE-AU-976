@@ -25,7 +25,7 @@
             scroll-behavior: smooth; 
         }
 
-        /* BANDEAU & ACCUEIL */
+        /* 1. BANDEAU & ACCUEIL */
         .top-navbar {
             position: absolute;
             top: 0;
@@ -290,7 +290,6 @@
             overflow-y: auto;
         }
 
-        /* DIAPORAMA DE FOND */
         #cocktail-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -537,6 +536,7 @@
             </div>
         </div>
 
+        <!-- TOTAL AUTOMATIQUE PAR SAVEUR -->
         <div class="chicha-total-box">
             PRIX SESSION CHICHA : <span id="chicha-price-val">0</span> €
         </div>
@@ -557,7 +557,7 @@
     </form>
 </main>
 
-<!-- 3. VOIR NOS COCKTAILS (DIAPORAMA + GALERIE ENTIÈREMENT EN MINUSCULES + COMMANDE) -->
+<!-- 3. VOIR NOS COCKTAILS -->
 <div id="cocktail-overlay" class="fullscreen-overlay">
     <div id="cocktail-bg">
         <div class="c-slide" style="background-image: url('saveur.jpg'); opacity: 1;"></div>
@@ -574,7 +574,6 @@
         <h2 style="color: var(--blue); font-size: 1.6rem; margin-bottom: 6px;">NOS CRÉATIONS COCKTAILS</h2>
         <p style="color: #ddd; font-size: 0.95rem; margin-bottom: 20px;">Découvrez nos recettes puis commandez en bas</p>
 
-        <!-- EXACTEMENT ALIGNÉ SUR VOTRE GITHUB -->
         <div class="cocktail-gallery">
             <div class="gallery-card"><img src="saveur.jpg" alt="Cocktail 1"><span>Mojito</span></div>
             <div class="gallery-card"><img src="saveur1.jpg" alt="Cocktail 2"><span>Moscow Mule</span></div>
@@ -817,8 +816,16 @@
         }
     }, 4000);
 
-    // GESTION DES SAVEURS CHICHA (15€ PAR SAVEUR CUMULATIF)
+    // GESTION DES SAVEURS CHICHA : 15€ MULTIPLIÉ PAR LE NOMBRE DE SAVEURS
     const PRIX_PAR_SAVEUR = 15;
+
+    function recalculerChicha() {
+        const count = document.querySelectorAll('#reservation-section .flavor-item.selected').length;
+        const totalChicha = count * PRIX_PAR_SAVEUR;
+        document.getElementById('chicha-price-val').textContent = totalChicha;
+        document.getElementById('chicha-prix-hidden').value = totalChicha + "€";
+    }
+
     document.querySelectorAll('#reservation-section .flavor-item').forEach(item => {
         item.onclick = () => {
             const checkbox = item.querySelector('input[type="checkbox"]');
@@ -835,10 +842,7 @@
                 item.classList.add('selected');
                 checkbox.checked = true;
             }
-            const count = document.querySelectorAll('#reservation-section .flavor-item.selected').length;
-            const totalChicha = count * PRIX_PAR_SAVEUR;
-            document.getElementById('chicha-price-val').textContent = totalChicha;
-            document.getElementById('chicha-prix-hidden').value = totalChicha + "€";
+            recalculerChicha();
         };
     });
 
